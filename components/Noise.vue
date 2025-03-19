@@ -58,5 +58,5 @@ export default {
 
 <template>
   <canvas ref="canvas"
-    class="h-full w-full opacity-10 left-0 top-0 pointer-events-none mix-blend-multiply position-fixed z-9000 dark:mix-blend-screen"></canvas>
+    class="h-full w-full opacity-10 dark:opacity-5 left-0 top-0 pointer-events-none mix-blend-multiply position-fixed z-9000 dark:mix-blend-screen"></canvas>
 </template>
