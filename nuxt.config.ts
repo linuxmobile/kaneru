@@ -18,10 +18,6 @@ export default defineNuxtConfig({
 	},
 	css: ["@unocss/reset/tailwind.css"],
 	content: {
-		database: {
-			type: "postgres",
-			url: process.env.POSTGRES_URL || "",
-		},
 		build: {
 			markdown: {
 				toc: { depth: 2 },
@@ -44,9 +40,10 @@ export default defineNuxtConfig({
 						"diff",
 					],
 					theme: {
-						default: "kanagawa-lotus",
-						dark: "kanagawa-wave",
+						default: "github-light",
+						dark: "github-dark",
 					},
+					preload: [],
 				},
 			},
 		},
@@ -55,16 +52,11 @@ export default defineNuxtConfig({
 		preference: "system",
 		classSuffix: "",
 	},
-	routeRules: {
-		"/": { prerender: true },
-		"/blog": { ssr: true },
-		"/blog/:page": { ssr: true },
-		"/blog/*": { ssr: true },
-		"/**": {
-			headers: {
-				"Cross-Origin-Embedder-Policy": "require-corp",
-				"Cross-Origin-Opener-Policy": "same-origin",
-			},
+	nitro: {
+		prerender: {
+			crawlLinks: true,
+			routes: ["/"],
+			ignore: ["/blog/**"],
 		},
 	},
 });
