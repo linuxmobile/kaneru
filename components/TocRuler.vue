@@ -10,10 +10,13 @@ const { data: page } = await useAsyncData(route.path, () => {
   return queryCollection('blog').path(route.path).first()
 })
 
-const headings = computed(() => {
+const rawHeadings = computed(() => {
   if (!page.value?.body?.toc?.links) return []
+  return page.value.body.toc.links
+})
 
-  return page.value.body.toc.links.flatMap(link => {
+const headings = computed(() => {
+  return rawHeadings.value.flatMap(link => {
     const result = [link]
     if (link.children) {
       result.push(...link.children)
@@ -31,16 +34,31 @@ const currentHeadingIndex = computed(() => {
   const currentPosition = (scrollPercentage.value / 100) * (headings.value.length - 1)
   return Math.floor(currentPosition)
 })
+
+const rulerHeightClass = computed(() => {
+  const primaryHeadingCount = rawHeadings.value.length
+  const totalHeadingCount = headings.value.length
+
+  const weightedCount = primaryHeadingCount * 1.5 + (totalHeadingCount - primaryHeadingCount)
+
+  if (weightedCount <= 6) return 'h-28'
+  if (weightedCount <= 8) return 'h-32'
+  if (weightedCount <= 12) return 'h-36'
+  if (weightedCount <= 16) return 'h-44'
+  if (weightedCount <= 20) return 'h-50'
+  return 'h-128'
+})
 </script>
+
 <template>
   <div v-if="headings.length > 0"
-    class="fixed left-8 top-1/2 -translate-y-1/2 h-60 flex flex-col items-center hidden md:flex">
-    <div class="relative h-full">
+    class="fixed left-8 top-1/2 -translate-y-1/2 flex flex-col items-center hidden md:flex" :class="rulerHeightClass">
+    <div class="relative h-full w-full">
       <NuxtLink v-for="(heading, index) in headings" :key="heading.id" :to="`#${heading.id}`"
         class="absolute transition-all duration-300 group left-0 hover:w-24" :class="{
-          'w-16': heading.depth === 2 && index !== currentHeadingIndex,
+          'w-10': heading.depth === 2 && index !== currentHeadingIndex,
           'w-6': heading.depth === 3 && index !== currentHeadingIndex,
-          'w-24': index === currentHeadingIndex
+          'w-16': index === currentHeadingIndex
         }" :style="`top: ${(index / (headings.length - 1)) * 100}%`">
         <div class="relative w-full group/line">
           <div class="absolute w-full h-3 -top-1.5 cursor-pointer">
