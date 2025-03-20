@@ -38,6 +38,7 @@ export default defineNuxtConfig({
 						"md",
 						"mdx",
 						"diff",
+						"kotlin",
 					],
 					theme: {
 						default: "github-light",

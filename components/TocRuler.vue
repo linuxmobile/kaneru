@@ -52,7 +52,7 @@ const rulerHeightClass = computed(() => {
 
 <template>
   <div v-if="headings.length > 0"
-    class="fixed left-8 top-1/2 -translate-y-1/2 flex flex-col items-center hidden md:flex" :class="rulerHeightClass">
+    class="fixed left-8 top-1/2 -translate-y-1/2 flex flex-col items-center hidden sm:flex" :class="rulerHeightClass">
     <div class="relative h-full w-full">
       <NuxtLink v-for="(heading, index) in headings" :key="heading.id" :to="`#${heading.id}`"
         class="absolute transition-all duration-300 group left-0 hover:w-24" :class="{

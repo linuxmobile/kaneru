@@ -298,17 +298,17 @@ computing should be.
 
 ### NixOS: Revolutionary Package Management and System Configuration
 
-NixOS isn't just another Linux distribution - it's a **completely different
+NixOS isn't just another Linux distribution, it's a **completely different
 approach to system management**. Built around the Nix package manager, it treats
 your entire system configuration as a **declarative specification**. This means:
 
-- **Atomic upgrades and rollbacks** are guaranteed - no more broken systems
-  after updates
+- **Atomic upgrades and rollbacks** are guaranteed, no more broken systems after
+  updates
 - **Multiple versions** of software can coexist without conflicts
 - Your entire system becomes **reproducible** across machines
 
 I once rescued a critical production server by simply rolling back to the
-previous system generation after a broken update - something impossible on
+previous system generation after a broken update, something impossible on
 traditional systems. This level of reliability is why NixOS is gaining rapid
 adoption among developers and system administrators who value stability.
 
@@ -326,8 +326,8 @@ The distribution comes in two flavors:
   quality
 
 OpenSUSE's build service and testing infrastructure ensure that even
-cutting-edge packages receive thorough validation before reaching users - a
-level of quality assurance rare in the free software world.
+cutting-edge packages receive thorough validation before reaching users, a level
+of quality assurance rare in the free software world.
 
 ### Fedora: Cutting-edge Features with Corporate Backing
 
@@ -379,7 +379,7 @@ administrators** who truly understand their systems.
 
 ## Debunking Linux Myths
 
-The Linux community has heard them all - persistent misconceptions that somehow
+The Linux community has heard them all, persistent misconceptions that somehow
 survive despite years of progress. Let's set the record straight on some of
 these stubborn myths that keep people locked in proprietary systems.
 
@@ -397,7 +397,7 @@ installation processes that are:
 ### "Linux gaming doesn't work"
 
 If you still believe this one, you've been living under a rock! The **Steam Deck
-revolution** has proven that Linux gaming isn't just "working" - it's thriving.
+revolution** has proven that Linux gaming isn't just "working", it's thriving.
 This handheld gaming PC runs a custom Linux distribution and supports thousands
 of titles.
 
@@ -426,7 +426,7 @@ dependencies, turning what was once a technical challenge into a few simple
 clicks.
 
 For professional software, alternatives like DaVinci Resolve, Blender, and
-Kdenlive offer **feature parity with proprietary tools** - and they're often
+Kdenlive offer **feature parity with proprietary tools**, and they're often
 free.
 
 ### "Linux isn't ready for the average user"
