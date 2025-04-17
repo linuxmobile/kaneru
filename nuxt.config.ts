@@ -54,10 +54,13 @@ export default defineNuxtConfig({
 		classSuffix: "",
 	},
 	nitro: {
-		prerender: {
-			crawlLinks: true,
-			routes: ["/"],
-			ignore: ["/blog/**"],
+		routeRules: {
+			"/**": {
+				headers: {
+					"Cross-Origin-Embedder-Policy": "require-corp",
+					"Cross-Origin-Opener-Policy": "same-origin",
+				},
+			},
 		},
 	},
 });

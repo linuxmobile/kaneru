@@ -2,25 +2,26 @@
 import { format } from 'date-fns'
 const route = useRoute()
 
-const { data: page, pending } = useLazyAsyncData(
+const { data: page, pending } = await useAsyncData(
   `blog-${route.path}`,
-  () => queryCollection('blog').path(route.path).first()
+  () => queryCollection('blog')
+    .path(route.path)
+    .first()
 )
 
-const { data: allArticles } = useLazyAsyncData('allArticles', () =>
-  queryCollection('blog')
+const { data: allArticles } = await useAsyncData(
+  'allArticles',
+  () => queryCollection('blog')
     .order('date', 'DESC')
     .all()
 )
 
-onMounted(() => {
-  if (!pending.value && !page.value) {
-    throw createError({
-      statusCode: 404,
-      statusMessage: `Blog post not found: ${route.path}`
-    })
-  }
-})
+if (!pending.value && !page.value) {
+  throw createError({
+    statusCode: 404,
+    statusMessage: `Blog post not found: ${route.path}`
+  })
+}
 
 const articleNumber = computed(() => {
   if (!allArticles.value || !page.value) return null
