@@ -1,0 +1,110 @@
+
+---
+import { ClientRouter } from "astro:transitions";
+
+interface Props {
+  author?: string
+  twitter?: string
+  title?: string
+  description?: string
+  ogImage?: {
+    src: string
+    alt: string
+  }
+  publishDate?: Date
+}
+
+const defaultMeta = {
+  author: 'linuxmobile',
+  twitter: '@LinuDev',
+  title: '霞る (Kaneru) Zen - Where Code Meets Kernel',
+  description:
+    "A kernel of wisdom in the digital realm. Where elegant code meets system-level thinking, inspired by Unix philosophy and the art of minimal, purposeful programming.",
+  ogImage: {
+    src: '/LINUDEV.png',
+    alt: 'Opengraphg default de la web Linu.dev'
+  }
+}
+
+const {
+  author = defaultMeta.author,
+  twitter = defaultMeta.twitter,
+  title = defaultMeta.title,
+  description = defaultMeta.description,
+  ogImage = defaultMeta.ogImage,
+  publishDate
+} = Astro.props
+
+const ogImageSrc = ogImage?.src ?? defaultMeta.ogImage.src;
+const ogImageAlt = ogImage?.alt ?? defaultMeta.ogImage.alt;
+
+const ogImageURL = new URL(ogImageSrc, Astro.site).href
+const canonicalURL = new URL(Astro.url).href
+---
+
+<head>
+  <meta charset='utf-8' />
+  <meta name='viewport' content='initial-scale=1.0, width=device-width, viewport-fit=cover' />
+  <meta name='generator' content={Astro.generator} />
+  <meta name='theme-color' content='#151618' />
+
+  <title>{title}</title>
+  <link rel='canonical' href={canonicalURL} />
+  <meta name='title' content={title} />
+  <meta name='description' content={description} />
+
+  <meta property='og:type' content={publishDate ? 'article' : 'website'} />
+  <meta property='og:url' content={canonicalURL} />
+  <meta property='og:title' content={title} />
+  <meta property='og:description' content={description} />
+  <meta property='og:image' content={ogImageURL} />
+  <meta property='og:site_name' content={author} />
+  <meta property='og:image:alt' content={ogImageAlt} />
+  <meta property='og:locale' content='en_US' />
+
+  <meta property='twitter:card' content='summary_large_image' />
+  <meta property='twitter:url' content={canonicalURL} />
+  <meta name='twitter:site' content={twitter} />
+  <meta name='twitter:creator' content={twitter} />
+  <meta property='twitter:title' content={title} />
+  <meta property='twitter:description' content={description} />
+  <meta property='twitter:image' content={ogImageURL} />
+
+  <meta name='robots' content='follow, index' />
+  <meta name='author' content={author} />
+  {publishDate && <meta property='article:published_time' content={publishDate.toISOString()} />}
+
+  <link rel='icon' href='/favicon.ico' type='image/x-icon' />
+  <link rel='mask-icon' href='/mask-icon.svg' color='#000000' />
+  <link rel='sitemap' href='/sitemap-index.xml' />
+
+  <script is:inline>
+    const applyTheme = () => {
+      const theme = localStorage.getItem('theme');
+      if (theme === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    };
+
+    const initializeTheme = () => {
+      let theme = localStorage.getItem('theme');
+      if (!theme) {
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          theme = 'dark';
+        } else {
+          theme = 'light';
+        }
+        localStorage.setItem('theme', theme);
+      }
+      applyTheme();
+    };
+
+    initializeTheme();
+
+    document.addEventListener('astro:after-swap', applyTheme);
+  </script>
+
+  <ClientRouter />
+</head>

@@ -1,0 +1,84 @@
+---
+import { getCollection } from 'astro:content';
+import { format } from 'date-fns';
+import Layout from '@/layouts/Layout.astro';
+
+export async function getStaticPaths({ paginate }) {
+  const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+  const sortedPosts = allPosts.sort((a, b) =>
+    new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+  );
+
+  return paginate(sortedPosts, { pageSize: 10 });
+}
+
+const { page } = Astro.props;
+const totalArticles = page.total;
+
+function formatDate(date) {
+  return format(new Date(date), "do MMM yyyy");
+}
+
+function getArticleNumber(index) {
+  const articleNumber = totalArticles - ((page.currentPage - 1) * 10 + index);
+  return String(articleNumber).padStart(2, '0');
+}
+
+const currentPage = page.currentPage;
+const totalPages = page.lastPage;
+---
+
+<Layout title="Blog - 霞る (Kaneru) Zen" description="Browse all articles on Kaneru, where code meets kernel">
+  <div class="flex flex-col gap-y-20 px-6 md:px-20 py-20">
+    <div class="w-full flex items-start relative">
+      <span class="absolute font-jp dark:text-jp-purple text-jp-white text-5xl -bottom-1 left-0 mix-blend-difference">ブログ</span>
+      <h1 class="text-jp-blue dark:text-jp-purple font-alt text-9xl">Blog</h1>
+    </div>
+
+    <section class="w-full flex flex-col gap-y-8">
+      <div class="flex items-center w-full gap-x-12 pb-12">
+        <div class="relative bg-jp-blue dark:bg-jp-purple px-2 py-1">
+          <p class="font-jp text-2xl text-jp-white dark:text-jp-purple mix-blend-difference absolute bottom-5 left-0">
+            記事一覧</p>
+          <h3 class="font-bold text-jp-white dark:text-jp-dark-primary">Articles</h3>
+        </div>
+        <div class="flex-1 bg-jp-dark-secondary dark:bg-jp-dark-secondary h-0.3"></div>
+      </div>
+
+      <div class="flex flex-col gap-y-6">
+        {page.data.map((post, index) => (
+          <article class="text-sm border-b-1 border-gray-800 pb-6 last:border-0">
+            <a href={`/blog/${post.slug}`} class="flex items-start justify-start gap-x-3 w-full">
+              <p class="text-gray-300 dark:text-gray-700">#0<span class="text-jp-blue dark:text-jp-purple">{getArticleNumber(index)}</span></p>
+              <div class="flex flex-col md:flex-row items-start md:items-center justify-between w-full">
+                <h2 class="truncate max-w-lg">{post.data.title}</h2>
+                <p class="text-sm">{formatDate(post.data.date)}</p>
+              </div>
+            </a>
+          </article>
+        ))}
+      </div>
+
+      <nav class="flex justify-center gap-x-4 mt-12">
+        <a href={currentPage > 2 ? `/blog/${currentPage - 1}` : '/blog'}
+          class={`px-4 py-2 border-1 border-jp-blue dark:border-jp-purple text-sm transition-colors ${
+            currentPage === 1
+              ? 'opacity-50 cursor-not-allowed'
+              : 'hover:bg-jp-blue dark:hover:bg-jp-purple hover:text-white'
+          }`}
+          tabindex={currentPage === 1 ? -1 : 0}>
+          Previous
+        </a>
+        <a href={`/blog/${currentPage + 1}`}
+          class={`px-4 py-2 border-1 border-jp-blue dark:border-jp-purple text-sm transition-colors ${
+            currentPage >= totalPages
+              ? 'opacity-50 cursor-not-allowed'
+              : 'hover:bg-jp-blue dark:hover:bg-jp-purple hover:text-white'
+          }`}
+          tabindex={currentPage >= totalPages ? -1 : 0}>
+          Next
+        </a>
+      </nav>
+    </section>
+  </div>
+</Layout>

@@ -1,0 +1,18 @@
+---
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import ThemeControls from './ThemeControls.astro';
+
+interface Props {
+  noiseEnabled?: boolean;
+}
+
+const { noiseEnabled = true } = Astro.props;
+---
+
+<main class="h-full md:max-w-4xl mx-auto border-1 border-gray-800 relative">
+  <Header />
+  <ThemeControls noiseEnabled={noiseEnabled} />
+  <slot />
+  <Footer />
+</main>

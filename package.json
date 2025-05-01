@@ -1,0 +1,22 @@
+{
+  "name": "kaneru",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^4.2.4",
+    "astro": "^5.7.2",
+    "date-fns": "^4.1.0",
+    "timeago.js": "^4.0.2"
+  },
+  "devDependencies": {
+    "@unocss/astro": "^66.1.0-beta.12",
+    "@unocss/reset": "^66.1.0-beta.11",
+    "unocss": "^66.1.0-beta.12"
+  }
+}

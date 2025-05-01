@@ -1,0 +1,65 @@
+---
+import Head from '@/components/Head.astro';
+import Noise from '@/components/Noise.astro';
+import Main from '@/components/Main.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: {
+    src: string;
+    alt: string;
+  };
+  publishDate?: Date;
+}
+
+const {
+  title,
+  description,
+  ogImage,
+  publishDate
+} = Astro.props;
+
+const noiseEnabled = true;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <Head
+    title={title}
+    description={description}
+    ogImage={ogImage}
+    publishDate={publishDate}
+  />
+  <body class="bg-jp-white text-jp-dark-primary dark:bg-jp-dark-primary dark:text-jp-white font-mono transition-colors duration-300 ease-in-out">
+    {noiseEnabled && <Noise />}
+    <Main noiseEnabled={noiseEnabled}>
+      <slot />
+    </Main>
+    <style is:global>
+      @font-face {
+        font-family: 'Tsunagi';
+        src: url('/fonts/TsunagiGothic.ttf') format('truetype');
+        font-weight: 100 900;
+        font-display: swap;
+        font-style: normal;
+      }
+
+      @font-face {
+        font-family: 'Schabo';
+        src: url('/fonts/schabo.woff2') format('woff2');
+        font-weight: normal;
+        font-display: swap;
+        font-style: normal;
+      }
+
+      @font-face {
+        font-family: 'GeistMono';
+        src: url('/fonts/GeistMono.ttf') format('truetype');
+        font-weight: 100 900;
+        font-display: swap;
+        font-style: normal;
+      }
+    </style>
+  </body>
+</html>

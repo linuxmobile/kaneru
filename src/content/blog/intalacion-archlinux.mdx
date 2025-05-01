@@ -1,0 +1,292 @@
+---
+title: 'Archlinux Installation Guide: Step by Step'
+description: "Learn how to install Archlinux with this simple and clear guide. Don't miss the opportunity to try this powerful and customizable operating system!"
+tags: Linux
+date: 2022-05-06
+---
+
+Tips / Installation / **Archlinux**
+
+## ISOS
+
+🔅 First download the official ISO from [Here](https://archlinux.org/download)
+
+🔅 Write the ISO to a USB:
+
+```bash
+# If we're using another Linux distro we can do the following
+fdisk -l # to find the USB partition
+dd if=$HOME/Downloads/archlinux-version-xxx.iso of=/dev/sdX bs=1M # bs=1M is optional
+```
+
+If we're using **Windows** we can use [Rufus](https://rufus.ie)
+
+## Boot from USB and install the BASE
+
+🔅 Next, we need to restart from the USB. Normally with <Kbd>F2</Kbd> or
+<Kbd>Del</Kbd> we should be able to enter the BIOS and select the USB.
+
+🔅 Boot Archlinux and continue
+
+🔅 Configure the keyboard layout with `loadkeys us` **If you don't use a US keyboard
+you can check which layout to use with: `ls -R /usr/share/kbd/keymaps`**
+
+🔅 Enable parallel downloads.
+
+```bash
+nano /etc/pacman.conf
+
+# Uncomment the "ParallelDownloads" option and specify the number we want. In my case five seems perfect.
+ParallelDownloads = 5
+```
+
+🔅 Save with:
+
+<Kbd>Ctrl</Kbd> + <Kbd>o</Kbd> &<Kbd>Ctrl</Kbd> + <Kbd>x</Kbd>
+
+🔅 Update the repositories
+
+```bash
+pacman -Syy
+```
+
+🔅 Partitions:
+
+    **NOTE**: In my case, I keep the disk without dual boot, I only have one operating system which is
+    Archlinux/Artix. But I'll show the method I use if I need to keep Windows (for some reason!)
+
+```bash
+# with fdisk I check the partition names
+fdisk -l
+
+# Create the /boot folder and delete the previous boot from the distro I normally have
+
+mkdir -p /mnt/boot/
+mount /dev/nvme0n1p1 /mnt/boot/
+```
+
+_I do this step to avoid having to create another EFI partition, I use the
+same one as Windows, and I don't format this partition_
+
+```bash
+# delete the archlinux boot entries
+
+rm {*.img}
+rm vmlinuz-linux
+rm -rf grub/
+rm -rf EFI/arch/
+```
+
+_Leaving the EFI/Microsoft folder untouched_
+
+🔅 Then format the partition where the root will go `mkfs.btrfs -F /dev/nvme0n1p5/`
+and continue with the installation.
+
+🔅 Partition the disk:
+
+👉 **Note:** **In my case my disk is NVME, so replace NVME with sda, sdb
+or whatever you have.**
+
+```bash
+cfdisk /dev/nvme0n1
+```
+
+```
+      Start                  Size
+/dev/nvme0n1p1               512M         # 512M / 1GB recommended
+
+/dev/nvme0n1p2               60G          # 40/60GB
+
+/dev/nvme0n1p3              405.3G        # The rest of the space
+```
+
+👉 **Note:** <i>This installation is exclusively for UEFI, and
+also consider that I'm not using dual boot. Just arch/artix.</i>
+
+🔅 Format the partitions:
+
+```bash
+# In this case I use xfs for my home and root partition. You can choose btrfs or ext4...
+mkfs.xfs -L ROOT /dev/nvme0n1p2        # Root partition
+mkfs.xfs -L HOME /dev/nvme0n1p3        # Home partition (optional)
+mkfs.fat -F 32 /dev/nvme0n1p1          # EFI/boot partition
+fatlabel /dev/nvme0n1p1 EFI
+```
+
+🔅 Mount the partitions:
+
+```bash
+mount /dev/disk/by-label/ROOT /mnt
+mkdir -p /mnt/boot
+mkdir -p /mnt/home
+mount /dev/disk/by-lable/HOME /mnt/home
+mount /dev/disk/by-label/EFI /mnt/boot
+```
+
+### Install the base:
+
+```bash
+pacstrap /mnt base base-devel linux linux-firmware nano dhcpcd
+```
+
+🔅 Generate the fstab file
+
+```bash
+genfstab -U /mnt >> /mnt/etc/fstab
+```
+
+### Configuring our system
+
+🔅 Change to root in our system
+
+```bash
+arch-chroot /mnt
+```
+
+🔅 Configure the clock
+
+```bash
+ln -sf /usr/share/zoneinfo/America/New_York /etc/localtime  # Here we need to put the region/city.
+```
+
+👉 **Note:** **With hwclock we generate /etc/adjtime**
+
+```bash
+hwclock --systohc
+```
+
+🔅 Generate the locales
+
+```bash
+# Uncomment whichever you prefer. I prefer the system in English
+nano /etc/locale.gen
+locale-gen
+
+# Here we can edit the file and select our favorite
+nano /etc/locale.conf
+LANG=en_US.UTF=8 # in my case, I prefer en_US
+
+nano /etc/vconsole.conf
+KEYMAP=us
+```
+
+🔅 Install the bootloader:
+
+```bash
+pacman -S grub efibootmgr
+```
+
+👉 **Note 3:** **My configuration is designed for UEFI systems. Pay attention...**
+
+🔅 Install grub:
+
+```bash
+# If you're using MBR and not UEFI:
+# grub-install --recheck /dev/sda
+grub-install --target=x86_64-efi --efi-directory=/boot --recheck
+
+grub-mkconfig -o /boot/grub/grub.cfg
+```
+
+🔅 Set the ROOT password:
+
+```bash
+passwd # when you hit enter, type the password.
+
+useradd -m -G wheel -s /bin/bash yourusername # Obviously, type your username here!
+
+passwd yourusername
+```
+
+🔅 Add WHEEL to sudoers file:
+
+```bash
+EDITOR=nano visudo
+# uncomment: (removing the #)
+%wheel ALL=(ALL:ALL) ALL
+```
+
+🔅 Configure the hostname:
+
+```bash
+nano /etc/hostname
+# hostname is giving a name to the host:
+# I like "aesthetic" So it can be like your nickname.
+```
+
+🔅 Add it to hosts:
+
+::: code-output-flex
+
+```bash
+nano /etc/hosts
+```
+
+```bash
+127.0.0.1               localhost
+::1                     localhost
+127.0.1.1               yourhostname.localdomain yourhostname
+
+# replace "yourhostname" with the hostname you chose.
+```
+
+:::
+
+🔅 Install DHCPCD (internet client):
+
+```bash
+pacman -S dhcpcd dhcpcd-dinit
+```
+
+🔅 Unmount and reboot:
+
+```bash
+exit                    # To exit su
+exit                    # To exit chroot
+umount -R /mnt          # To unmount
+reboot                  # To reboot
+```
+
+At this point after rebooting and not getting any errors or
+issues, it means you have finished installing the base Archlinux system.
+
+I'd like to leave you with some additional steps (tips) that helped me when
+I didn't understand anything.
+
+🔅 Enable DHCPCD to have internet:
+
+```bash
+sudo systemctl enable dhcpcd
+sudo systemctl start dhcpcd
+```
+
+🔅 Install paru: **If we don't have git, we need to install it
+`sudo pacman -S git wget`.**
+
+```bash
+git clone https://aur.archlinux.org/paru.git
+cd paru
+makepkg -si
+```
+
+🔅 Finally, some packages that will be useful:
+
+```bash
+# Handle zip, rar files.
+sudo pacman -S zip unzip unrar
+
+# Alsa and pipewire for audio
+sudo pacman -S pipewire pipewire-alsa pipewire-pulse alsa-utils
+
+# To be able to view external disks
+sudo pacman -S ntfs-3g dosfstools exfat-utils
+
+# Intel / AMD drivers
+paru -S xf86-video-amdgpu vulkan-radeon mesa-libgl mesa-vdpau libvdpau-va-gl libva-mesa-driver #AMD
+paru -S xf86-video-intel mesa-libgl libvdpau-va-gl #Intel
+```
+
+    Well, that's all. I hope it helped you. If you made it this far, please check out my
+    other posts.
+
+````` ``````
