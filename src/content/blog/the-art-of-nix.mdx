@@ -6,6 +6,8 @@ date: 2024-01-26
 ---
 import Code from '../../components/Code.astro';
 
+export const components = { pre: Code }
+
 ## Introduction to Nix and NixOS
 
 **Nix** is a powerful declarative package manager that enables users to define their system's desired state through configuration files. The declarative approach means you specify *what* you want rather than *how* to achieve it. We'll explore Nix's capabilities in detail throughout this guide.
@@ -35,8 +37,7 @@ Unlike traditional Linux distributions, where changing desktop environments ofte
 
 For example, switching desktop environments requires only a simple configuration change:
 
-<Code lang="nix" filename="configuration.nix">
-```nix
+```nix filename="configuration.nix"
 # Reemplazas plasma5 por gnome
 xserver = {
   enable = true;
@@ -45,7 +46,6 @@ xserver = {
   };
 }
 ```
-</Code>
 
 ### System Rollback Capabilities
 
@@ -55,14 +55,12 @@ NixOS implements a robust system versioning mechanism that enables reliable syst
 - Recover from unsuccessful configurations
 
 Example GRUB menu:
-<Code lang="bash" filename="GRUB Menu">
-```bash
+```bash filename="GRUB Menu"
 # GNU GRUB VERSION 2.02
 *NixOS - Configuration 129 (2024-01-23)
 *NixOS - Configuration 128 (2024-01-16)
 *NixOS - Configuration 127 (2023-11-28)
 ```
-</Code>
 
 ### Dependency Resolution
 
@@ -106,8 +104,7 @@ Development environments in Nix are typically defined using Nix Flakes, which pr
 
 Let's explore how to create a development environment using a Flake:
 
-<Code lang="nix" filename="flake.nix">
-```nix
+```nix filename="flake.nix"
 {
   description = "Example JavaScript development environment";
 
@@ -145,28 +142,22 @@ Let's explore how to create a development environment using a Flake:
     };
 }
 ```
-</Code>
 
 ### Practical Example: Using Development Environments
 
 Let's demonstrate how to use a Nix development environment from a GitHub repository:
 
-<Code lang="bash">
 ```bash
 # Initialize a JavaScript development environment from a GitHub repository
 nix develop "github:linuxmobile/dotfiles#javascript"
 ```
-</Code>
 
 Upon execution, you'll enter a dedicated development shell:
-<Code lang="bash">
 ```bash
 (nix:linuxmobile-env) bash-5.1$
 ```
-</Code>
 
 Verifying the isolated environment:
-<Code lang="bash">
 ```bash
 # Check Node.js installation path
 type node
@@ -174,7 +165,6 @@ type node
 # Output shows isolated installation
 node is /nix/store/i88kh2fd03f5fsd3a948s19gliggd2wd-nodejs-18.12.1/bin/node
 ```
-</Code>
 
 ### Language-Specific Environments
 

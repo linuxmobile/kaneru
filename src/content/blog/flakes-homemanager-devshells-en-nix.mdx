@@ -1,4 +1,4 @@
-import Code from 'kaneru/src/components/Code.astro';
+
 ---
 title: 'Mastering Development with Nix'
 description: 'Explore how Nix, Flakes, Home-Manager and DevShells are revolutionizing software development, offering a reproducible and declarative environment. Discover why NixOS stands out among other Linux distributions and operating systems'
@@ -7,6 +7,8 @@ date: 2024-03-12
 ---
 
 import Code from '../../components/Code.astro';
+
+export const components = { pre: Code }
 
 ## Intro
 
@@ -22,7 +24,7 @@ In the **Nix** ecosystem, **Flakes** represent a revolutionary approach to packa
 
 At the heart of **Flakes** lies a **declarative** configuration file called `flake.nix`. This file serves as a complete blueprint, specifying not only your required packages and their versions but also the entire build process. As a result, any developer or system using your **Flake** will recreate identical development environments and outputs, ensuring consistent results across all platforms.
 
-<Code lang="nix" filename="file.nix">
+```nix
 {
   description = "A basic Rust devshell for NixOS users developing Leptos";
 
@@ -58,12 +60,12 @@ At the heart of **Flakes** lies a **declarative** configuration file called `fla
           ];
 
           shellHook = ''
-            '';
+          '';
         };
       }
     );
 }
-</Code>
+```
 
 Through the `devShell` configuration, we define a consistent development environment containing all necessary dependencies for **Leptos** development. This approach eliminates geographic and system-specific variables—whether you're developing in Buenos Aires, Barcelona, or Bangkok, your project maintains identical dependencies, effectively solving the notorious "it works on my machine" problem.
 
@@ -92,9 +94,9 @@ This consistency is crucial for modern development workflows, especially in dist
 
 **Flakes** revolutionize development environment distribution. Instead of maintaining lengthy setup documentation or complex configuration scripts, everything required to build and run your project is encoded in the Flake definition. New team members can begin contributing immediately with just:
 
-<Code lang="bash">
+```bash
 nix develop github:linuxmobile/kaku#rust
-</Code>
+```
 
 - Dependency Isolation
 
@@ -112,7 +114,7 @@ Home-Manager operates on the principle of declarative configuration: instead of 
 
 Here's how you might configure common development tools in your `home.nix`:
 
-<Code lang="nix">
+```nix
 { config, pkgs, ... }:
 
 {
@@ -138,7 +140,7 @@ Here's how you might configure common development tools in your `home.nix`:
     };
   };
 }
-</Code>
+```
 
 This straightforward configuration eliminates **hours of manual environment setup** when switching machines or reinstalling systems. Simply maintain your `home.nix` file in **version control**, execute Home-Manager, and watch as it **precisely recreates** your customized environment anywhere.
 
@@ -160,7 +162,7 @@ When executing `nix develop` or `nix-shell`, you're creating an **isolated envir
 
 Here's how you might define a Python development environment in your `flake.nix`:
 
-<Code lang="nix">
+```nix
 {
   description = "Python development environment";
 
@@ -187,7 +189,7 @@ Here's how you might define a Python development environment in your `flake.nix`
         };
       });
 }
-</Code>
+```
 
 In this example, we've configured an environment with **Python** and essential development tools pre-installed. When you execute `nix develop`, you instantly access a shell with these tools ready to use. The power lies in its shareability—any team member can reproduce this exact environment by using the same Flake, eliminating environment-related inconsistencies across the team.
 
@@ -221,7 +223,7 @@ DevShells provide sophisticated version control capabilities:
 
 ### Practical Comparison Example
 
-<Code lang="nix">
+```nix
 {
   devShells = {
     mi-proyecto = pkgs.mkShell {
@@ -229,7 +231,7 @@ DevShells provide sophisticated version control capabilities:
     };
   };
 }
-</Code>
+```
 
 This approach is clean, declarative and avoids having to deal with global nvm or
 npm that could conflict with other projects.
@@ -252,9 +254,9 @@ Adopting **Nix** and its ecosystem—**Flakes**, **Home-Manager**, and **DevShel
 
 The Nix ecosystem transforms the traditional challenges of environment management into systematic, reproducible processes. Whether you're working on personal projects or enterprise applications, Nix provides the foundation for reliable, scalable, and maintainable development workflows.
 
-<Code lang="nix">
+```nix
 # The future of development is here:
 nix develop  # And you're ready to code
-</Code>
+```
 
 Ready to elevate your development experience? Nix offers the tools and infrastructure to make "it works everywhere" not just a hope, but a guarantee.

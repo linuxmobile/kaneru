@@ -1,6 +1,6 @@
 ---
-import { getCollection } from 'astro:content';
-import { format } from 'date-fns';
+import { getCollection, type CollectionEntry } from 'astro:content';
+import { format, isValid } from 'date-fns';
 import Layout from '@/layouts/Layout.astro';
 
 const allPosts = await getCollection('blog', ({ data }) => !data.draft);
@@ -11,11 +11,15 @@ const sortedPosts = allPosts.sort((a, b) =>
 const firstPagePosts = sortedPosts.slice(0, 10);
 const totalArticles = sortedPosts.length;
 
-function formatDate(date) {
-  return format(new Date(date), "do MMM yyyy");
+function formatDate(dateInput: string | Date): string {
+  const date = new Date(dateInput);
+  if (!isValid(date)) {
+    return 'Invalid Date';
+  }
+  return format(date, "do MMM yyyy");
 }
 
-function getArticleNumber(index) {
+function getArticleNumber(index: number): string {
   const articleNumber = totalArticles - index;
   return String(articleNumber).padStart(2, '0');
 }
@@ -42,9 +46,9 @@ const hasNextPage = totalPages > 1;
       </div>
 
       <div class="flex flex-col gap-y-6">
-        {firstPagePosts.map((post, index) => (
+        {firstPagePosts.map((post: CollectionEntry<'blog'>, index: number) => (
           <article class="text-sm border-b-1 border-gray-800 pb-6 last:border-0">
-            <a href={`/blog/${post.slug}`} class="flex items-start justify-start gap-x-3 w-full">
+            <a href={`/blog/${post.slug}/`} class="flex items-start justify-start gap-x-3 w-full">
               <p class="text-gray-300 dark:text-gray-700">#0<span class="text-jp-blue dark:text-jp-purple">{getArticleNumber(index)}</span></p>
               <div class="flex flex-col md:flex-row items-start md:items-center justify-between w-full">
                 <h2 class="truncate max-w-lg">{post.data.title}</h2>

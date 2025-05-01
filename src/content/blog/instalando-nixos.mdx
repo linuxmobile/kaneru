@@ -6,6 +6,8 @@ date: 2024-01-26
 ---
 import Code from '../../components/Code.astro';
 
+export const components = { pre: Code }
+
 # Understanding Kaku: A NixOS Configuration Guide
 
 ![NixOS Configuration Banner](https://i.imgur.com/FmGUopQ.png)
@@ -14,7 +16,6 @@ import Code from '../../components/Code.astro';
 
 This guide explains my personal NixOS configuration, [Kaku](https://github.com/linuxmobile/kaku), designed for a modern desktop environment. Before diving in, you can preview the configuration structure using:
 
-<Code lang="bash">
 ```bash
 › nix flake show github:linuxmobile/kaku
 github:linuxmobile/kaku/8394cdcfd946c9620d202fec46f5eb625812c826
@@ -34,7 +35,6 @@ github:linuxmobile/kaku/8394cdcfd946c9620d202fec46f5eb625812c826
         ├───repl: package 'repl'
         └───wezterm: package 'wezterm-unstable-e3cd2e93d0ee5f3af7f3fe0af86ffad0cf8c7ea8'
 ```
-</Code>
 
 ## Configuration Structure
 
@@ -42,8 +42,7 @@ The configuration is organized into six main directories, each with a specific p
 
 ### 1. Directory Layout
 
-<Code lang="bash" filename="Directory Structure">
-```bash
+```bash filename="Directory Structure"
 ├── home
 │   ├── editors
 │   ├── profiles
@@ -79,7 +78,6 @@ The configuration is organized into six main directories, each with a specific p
 ├── flake.lock
 └── flake.nix
 ```
-</Code>
 
 ### 2. Home Directory (`home/`)
 
@@ -87,8 +85,7 @@ The `home/` directory manages user-specific configurations using Home Manager:
 
 ### Home
 
-<Code lang="text" filename="home/">
-```md
+```text filename="home/"
 | Name                | Description                                             |
 | ------------------- | ------------------------------------------------------- |
 | default.nix         | Special Home-Manager configuration                      |
@@ -99,7 +96,6 @@ The `home/` directory manages user-specific configurations using Home Manager:
 | terminal            | Terminal programs, shells, etc                          |
 | specialisations.nix | Special Light/Dark configuration                        |
 ```
-</Code>
 
 - **Editors**: Logically contains the text editors you need.
 - **Profiles**: It's recommended to create your own profile and add it to
@@ -114,13 +110,11 @@ The `home/` directory manages user-specific configurations using Home Manager:
 
 Each machine gets its own configuration:
 
-<Code lang="text" filename="hosts/">
-```bash
+```text filename="hosts/"
 | Name      | Description                    |
 | --------- | ------------------------------ |
 | aesthetic | LinuDev's Main Computer        |
 ```
-</Code>
 
 All hosts share common settings through `modules/core.nix`, with machine-specific configurations in their respective directories.
 
@@ -128,8 +122,7 @@ All hosts share common settings through `modules/core.nix`, with machine-specifi
 
 Contains utility functions and theme management:
 
-<Code lang="text" filename="lib/">
-```md
+```text filename="lib/"
 | Name        | Description                                  |
 | ----------- | -------------------------------------------- |
 | colors      | Function to handle system colors             |
@@ -137,28 +130,24 @@ Contains utility functions and theme management:
 | repl.nix    | Cool Nix REPL wrapper                        |
 | theme       | Program that I reference later               |
 ```
-</Code>
 
 ### 5. Custom Packages (`pkgs/`)
 
 Self-maintained packages:
 
-<Code lang="text" filename="pkgs/">
-```md
+```text filename="pkgs/"
 | Name    | Description                                          |
 | ------- | ---------------------------------------------------- |
 | biome   | Biome.js, nixpkgs updates too slowly                 |
 | repl    | auto-loads system flake in current dir               |
 | wezterm | There was a Wayland issue, I fix it here             |
 ```
-</Code>
 
 ### 6. System Configuration (`system/`)
 
 Core system settings:
 
-<Code lang="text" filename="system/">
-```md
+```text filename="system/"
 | Name     | Description              |
 | -------- | ------------------------ |
 | Core     | Shared configuration     |
@@ -168,7 +157,6 @@ Core system settings:
 | Programs | System software          |
 | Services | System services          |
 ```
-</Code>
 
 - In `core` we find the user configuration, boot configuration (shared across
   all PCs)
@@ -196,17 +184,14 @@ Highly recommended: review each folder and see what is necessary and what isn't.
    - Root (50GB+)
    - Home (remaining space)
 
-   <Code lang="bash">
-    ```bash
+   ```bash
    gdisk /dev/nvme0n1
    # 'o' - create new partition table
    # 'n' - new partition (EFI: type ef00)
    ```
-   </Code>
 
 2. **Format Partitions**
 
-   <Code lang="bash">
    ```bash
    # Format EFI partition
    mkfs.fat -F 32 /dev/nvme0n1p1
@@ -217,50 +202,39 @@ Highly recommended: review each folder and see what is necessary and what isn't.
    # Format home partition
    mkfs.xfs /dev/nvme0n1p3
    ```
-   </Code>
 
 3. **Mount Filesystems**
 
-   <Code lang="bash">
-     ```bash
+   ```bash
    mount /dev/disk/by-label/NIXOS /mnt
    mkdir -p /mnt/boot
    mount /dev/disk/by-label/EFI /mnt/boot
    ```
-   </Code>
 
 4. **Enable Required Tools**
 
-   <Code lang="bash">
    ```bash
    nix-shell -p nixFlakes git
    ```
-   </Code>
 
 5. **Clone Configuration**
 
-   <Code lang="bash">
    ```bash
    git clone --depth 1 https://github.com/linuxmobile/kaku /mnt/etc/nixos
    ```
-   </Code>
 
 6. **Generate Hardware Configuration**
 
-   <Code lang="bash">
    ```bash
    sudo nixos-generate-config --dir --force /mnt/etc/nixos/hosts/aesthetic
    ```
-   </Code>
 
 7. **Install System**
 
-   <Code lang="bash">
    ```bash
    cd /mnt/etc/nixos
    nixos-install --flake .#aesthetic
    ```
-   </Code>
 
 ### Post-Installation
 

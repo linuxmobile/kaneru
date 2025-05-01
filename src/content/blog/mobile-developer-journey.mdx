@@ -6,6 +6,8 @@ date: 2025-03-20
 ---
 import Code from '../../components/Code.astro';
 
+export const components = { pre: Code }
+
 ## Introduction
 
 When I first started tinkering with React components in my cramped apartment, I
@@ -18,8 +20,7 @@ robotics sector—a career pivot that's been as challenging as it is rewarding.
 My journey began like many developers—building websites and struggling with CSS.
 Then came an opportunity that changed everything:
 
-<Code lang="jsx" filename="before-after-comparison.jsx">
-```jsx
+```jsx filename="before-after-comparison.jsx"
 // What I used to write (simplified)
 const LandingPage = () => (
   <div className="hero">
@@ -60,7 +61,6 @@ const RobotController = () => {
   );
 };
 ```
-</Code>
 
 The transition from manipulating DOM elements to sending commands that control
 physical machines was mind-blowing. Suddenly, a UI bug wasn't just an aesthetic
@@ -108,8 +108,7 @@ My workspace is modest but effective:
 - A collection of Android test devices (sadly, no iOS hardware—more on that
   challenge later)
 
-<Code lang="jsx" filename="platform-testing.jsx">
-```jsx
+```jsx filename="platform-testing.jsx"
 // How I handle the iOS testing challenge without devices
 const PlatformSpecificTesting = () => {
   // For Android, I test directly on devices
@@ -132,7 +131,6 @@ const PlatformSpecificTesting = () => {
   );
 };
 ```
-</Code>
 
 The biggest workspace challenge wasn't equipment—it was **network reliability**.
 When your commit might literally make a robot move (or stop moving!), you need
@@ -170,8 +168,7 @@ Without prior robotics experience, I've become heavily dependent on:
 
 The most valuable investment was learning to use debugging tools effectively:
 
-<Code lang="jsx" filename="command-tracker-middleware.jsx">
-```jsx
+```jsx filename="command-tracker-middleware.jsx"
 // Custom debugging middleware for React Native
 const robotCommandTracker = (store) => (next) => (action) => {
   // Only track robot commands
@@ -195,7 +192,6 @@ const robotCommandTracker = (store) => (next) => (action) => {
   return next(action);
 };
 ```
-</Code>
 
 Despite having never touched a robot before this job, these tools have helped me
 bridge the knowledge gap. The most surprising revelation? Many of the **reactive
@@ -215,8 +211,7 @@ React Native gives us the **cross-platform advantages** we desperately need,
 while the native modules provide the **performance** required for hardware
 communication:
 
-<Code lang="jsx" filename="robot-controller.jsx">
-```jsx
+```jsx filename="robot-controller.jsx"
 // React Native component for a robotics control interface
 const RobotController = () => {
   const [motorSpeed, setMotorSpeed] = useState(0);
@@ -259,7 +254,6 @@ const RobotController = () => {
   );
 };
 ```
-</Code>
 
 ### Challenges I've Faced
 
@@ -344,8 +338,7 @@ both the physical robot and your app simultaneously, so interfaces need to be:
   accidentally
 - **Feedback-rich**: Clear confirmation when commands are sent and received
 
-<Code lang="jsx" filename="motor-control-button.jsx">
-```jsx
+```jsx filename="motor-control-button.jsx"
 // Example of how we handle critical actions with confirmation
 const MotorControlButton = ({ action, power }) => {
   const [isPending, setIsPending] = useState(false);
@@ -383,7 +376,6 @@ const MotorControlButton = ({ action, power }) => {
   );
 };
 ```
-</Code>
 
 ### Testing Strategies When Working Remotely from Hardware
 
@@ -399,8 +391,7 @@ a robot you can't see? Our team has developed a multi-stage approach:
 
 The most important testing tool is our **command auditing system**:
 
-<Code lang="jsx" filename="command-tracker.jsx">
-```jsx
+```jsx filename="command-tracker.jsx"
 // Our command tracking system
 const trackCommand = (commandType, parameters) => {
   // Log locally
@@ -424,7 +415,6 @@ const trackCommand = (commandType, parameters) => {
   }
 };
 ```
-</Code>
 
 ### UX Considerations When Designing Controls for Physical Systems
 
@@ -456,8 +446,7 @@ The most counter-intuitive discovery was how **technical challenges** actually
 accelerated relationship-building. When your team is debugging why a robot isn't
 responding to the mobile interface, the usual small talk barriers disappear:
 
-<Code lang="jsx" filename="robot-connection.jsx">
-```jsx
+```jsx filename="robot-connection.jsx"
 // This code snippet sparked a 2-hour debugging session that
 // turned strangers into colleagues
 const connectToRobot = async () => {
@@ -479,7 +468,6 @@ const connectToRobot = async () => {
   }
 };
 ```
-</Code>
 
 These debugging sessions revealed more about my colleagues' problem-solving
 styles than months of casual conversations might have. I've found myself
@@ -524,8 +512,7 @@ developers in robotics. The challenges include:
 2. **Communication barriers** when describing hardware behavior
 3. **Learning delays** without immediate feedback on physical interactions
 
-<Code lang="jsx" filename="error-handling.jsx">
-```jsx
+```jsx filename="error-handling.jsx"
 // My error handling evolved to compensate for remote work limitations
 const handleError = (error, context) => {
   // Classify error type
@@ -552,7 +539,6 @@ const handleError = (error, context) => {
   }
 };
 ```
-</Code>
 
 Working remotely on physical systems has forced me to become a more thorough
 developer—I can't rely on physical presence to solve problems, so my code and
@@ -579,8 +565,7 @@ The most valuable skills I've developed weren't technical but **metacognitive**:
 My biggest growth came in **documentation habits**. I now document everything
 obsessively—not just for others, but for my future self:
 
-<Code lang="jsx" filename="robot-activation.jsx">
-```jsx
+```jsx filename="robot-activation.jsx"
 // Before joining robotics, my comments were basic
 function handlePress() {
   // Handle the button press
@@ -597,7 +582,6 @@ function handleRobotActivation() {
   sendRobotCommand(COMMAND_TYPES.ACTIVATE);
 }
 ```
-</Code>
 
 ### Tips for Those Interested in Remote Hardware-Adjacent Roles
 
@@ -634,8 +618,7 @@ there:
 The most effective approach was implementing **comprehensive telemetry** in our
 app:
 
-<Code lang="jsx" filename="robot-telemetry-hook.jsx">
-```jsx
+```jsx filename="robot-telemetry-hook.jsx"
 // Telemetry hook that helps bridge the physical distance
 const useRobotTelemetry = (robotId) => {
   const [telemetry, setTelemetry] = useState({});
@@ -656,7 +639,6 @@ const useRobotTelemetry = (robotId) => {
   return telemetry;
 };
 ```
-</Code>
 
 This constant stream of data became my lifeline to understanding the physical
 world my code was affecting, but it's still a pale substitute for being able to
