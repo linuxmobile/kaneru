@@ -10,7 +10,7 @@ interface Props {
 const { noiseEnabled = true } = Astro.props;
 ---
 
-<main class="h-full md:max-w-4xl mx-auto border-1 border-gray-800 relative">
+<main class="min-h-svh flex flex-col justify-between md:max-w-4xl border-1 border-jp-dark-secondary relative">
   <Header />
   <ThemeControls noiseEnabled={noiseEnabled} />
   <slot />

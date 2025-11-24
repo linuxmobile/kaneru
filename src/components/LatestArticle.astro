@@ -19,22 +19,23 @@ function getArticleNumber(index: number): string {
 }
 ---
 
-<section class="w-full flex flex-col gap-y-2">
-  <div class="flex items-center justify-center w-full gap-x-12 pb-12">
-    <div class="relative bg-jp-blue dark:bg-jp-purple px-2 py-1 whitespace-nowrap">
-      <p class="font-jp text-2xl text-jp-white dark:text-jp-purple mix-blend-difference absolute bottom-5 left-0">
-        最新の記事</p>
-      <h3 class="font-bold text-jp-white dark:text-jp-dark-primary">Latest</h3>
+<section class="w-full flex flex-col gap-y-2 border border-jp-dark-secondary">
+  <div class="flex flex-col p-2 relative select-none">
+    <div class="flex items-center justify-center gap-x-12 absolute px-2 -top-4 bg-jp-dark-primary h-fit w-fit">
+      <div class="relative bg-jp-blue dark:bg-keywords px-4 py-1 whitespace-nowrap">
+        <p class="font-jp text-2xl text-jp-white dark:text-functions mix-blend-difference absolute bottom-5 left-0">
+          最新の記事</p>
+        <h3 class="font-bold text-jp-white dark:text-jp-dark-primary">Latest</h3>
+      </div>
     </div>
-    <div class="flex-1 bg-jp-dark-secondary dark:bg-jp-dark-secondary h-0.3"></div>
   </div>
 
   {latestPosts.map((article: CollectionEntry<'blog'>, index: number) => (
-    <article class="text-sm">
+    <article class="text-sm px-2">
       <a href={`/blog/${article.slug}/`} class="flex items-start justify-start gap-x-3 w-full">
         <div class="flex flex-row items-center whitespace-nowrap">
-          <span class="text-gray-300 dark:text-gray-700">#0</span>
-          <span class="text-jp-blue dark:text-jp-purple">{getArticleNumber(index)}</span>
+          <span class="text-gray-300 dark:text-jp-white/20">#0</span>
+          <span class="text-jp-blue dark:text-accent">{getArticleNumber(index)}</span>
         </div>
         <div class="flex flex-col md:flex-row items-start md:items-center justify-between w-full">
           <h2 class="truncate max-w-lg">{article.data.title}</h2>
@@ -45,7 +46,7 @@ function getArticleNumber(index: number): string {
   ))}
 
   <a href="/blog/"
-    class="self-end mt-8 px-4 py-2 border-1 border-jp-blue dark:border-jp-purple text-sm hover:bg-jp-blue dark:hover:bg-jp-purple hover:text-white transition-colors">
+    class="self-end mt-2 px-4 py-2 border-1 border-jp-blue dark:border-functions text-sm hover:bg-jp-blue dark:hover:bg-functions hover:text-white transition-colors">
     All Articles
   </a>
 </section>

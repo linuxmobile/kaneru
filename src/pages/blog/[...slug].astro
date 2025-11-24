@@ -43,24 +43,26 @@ const pageOgImage = post.data.ogImage ? { src: post.data.ogImage.src, alt: post.
   publishDate={postDate}
   ogImage={pageOgImage}
 >
-  <section class="flex items-center justify-start p-6 md:p-20 gap-x-8 border-b-1 border-gray-800">
-    <div class="flex flex-col items-center justify-center border-1 border-jp-blue dark:border-jp-purple">
-      <p class="!text-white bg-jp-blue dark:bg-jp-purple w-full p-2 text-center">品番</p>
+  <section class="flex items-center justify-start p-6 md:p-20 gap-x-8 border-b-1 border-jp-dark-secondary">
+    <div class="flex flex-col items-center justify-center border-1 border-jp-blue dark:border-accent">
+      <p class="!text-jp-dark-primary bg-jp-blue dark:bg-accent w-full p-2 text-center">品番</p>
       {articleNumber && (
-        <p class="!text-gray-400 dark:text-gray-700 p-2">
-          #0<span class="text-jp-blue dark:text-jp-purple">{articleNumber}</span>
+        <p class="!text-gray-400 dark:text-jp-white/20 p-2">
+          #0<span class="text-jp-blue dark:text-accent">{articleNumber}</span>
         </p>
       )}
     </div>
     <div class="flex flex-col items-start justify-center">
-      <p class="!text-gray-400 dark:text-gray-700">{formattedDate} /</p>
-      <h1 class="font-semibold text-2xl text-jp-purple">{post.data.title}</h1>
+      <p class="dark:text-jp-dark-primary bg-functions px-2">{formattedDate}</p>
+      <h1 class="font-semibold text-2xl text-accent">{post.data.title}</h1>
     </div>
   </section>
 
-  {headings.length > 0 && (
-    <TocRuler headings={headings} />
-  )}
+  <div class="hidden md:flex">
+    {headings.length > 0 && (
+      <TocRuler headings={headings} />
+    )}
+  </div>
 
   <div class="px-6 md:px-20 py-10 text-sm max-w-none prose flex flex-col gap-y-4">
     <Content />
@@ -76,8 +78,9 @@ const pageOgImage = post.data.ogImage ? { src: post.data.ogImage.src, alt: post.
 
 .dark {
   --prose-body-color: #d1d5db;
-  --prose-heading-color: #9691D4;
-  --prose-link-color: #9691D4;
+  --prose-heading-color: #f780e2;
+  --prose-link-color: #02BF87;
+  --prose-strong-color: #7571F9;
 }
 
 .prose h1, .prose h2, .prose h3, .prose h4 {
@@ -136,7 +139,7 @@ const pageOgImage = post.data.ogImage ? { src: post.data.ogImage.src, alt: post.
 }
 
 .dark .prose strong {
-  background-color: #d1d5db;
+  background-color: var(--prose-strong-color);
   color: #090b0e;
 }
 
@@ -149,7 +152,7 @@ const pageOgImage = post.data.ogImage ? { src: post.data.ogImage.src, alt: post.
 }
 
 .dark .prose strong > a {
-  background-color: #d1d5db;
+  background-color: var(--prose-strong-color);
   color: #090b0e !important;
 }
 </style>

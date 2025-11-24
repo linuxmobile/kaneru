@@ -3,9 +3,9 @@ const currentPath = Astro.url.pathname;
 const currentUrl = Astro.url.origin + currentPath;
 ---
 
-<header class="w-full bg-gray-800 p-1">
-  <nav class="text-xs px-1 flex items-center justify-between">
-    <a href="/" class="!text-jp-white">{currentUrl}</a>
-    <a href="https://github.com/linuxmobile/kaneru" class="!text-jp-white">v0.1.2</a>
+<header class="w-full bg-jp-dark-secondary">
+  <nav class="text-xs flex items-center justify-between">
+    <a href="/" class="!text-jp-dark-primary bg-accent p-1">{currentUrl}</a>
+    <a href="https://github.com/linuxmobile/kaneru" class="!text-jp-dark-primary bg-functions p-1">v0.1.2</a>
   </nav>
 </header>

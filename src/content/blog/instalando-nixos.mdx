@@ -1,9 +1,10 @@
 ---
-title: 'NixOS Installation & Configuration Guide'
-description: 'Installing NixOS, Home-Manager, Flakes. And how to understand a reproducible configuration'
+title: "NixOS Installation & Configuration Guide"
+description: "Installing NixOS, Home-Manager, Flakes. And how to understand a reproducible configuration"
 tags: Linux
 date: 2024-01-26
 ---
+
 import Code from '../../components/Code.astro';
 
 export const components = { pre: Code }
@@ -171,6 +172,7 @@ Highly recommended: review each folder and see what is necessary and what isn't.
 ## Fresh Installation Guide
 
 ### Prerequisites
+
 - A USB drive with NixOS
 - UEFI-capable system
 - Basic command line knowledge
@@ -180,6 +182,7 @@ Highly recommended: review each folder and see what is necessary and what isn't.
 1. **Partition the Disk**
 
    Create three partitions using `gdisk`:
+
    - EFI (512MB)
    - Root (50GB+)
    - Home (remaining space)
@@ -239,6 +242,7 @@ Highly recommended: review each folder and see what is necessary and what isn't.
 ### Post-Installation
 
 After installation:
+
 1. Review the configuration files
 2. Customize user settings
 3. Rebuild the system to apply changes
@@ -246,6 +250,7 @@ After installation:
 ## Troubleshooting
 
 If you encounter issues:
+
 - Verify all partitions are mounted correctly
 - Check the hardware configuration
 - Ensure flake.nix is properly configured

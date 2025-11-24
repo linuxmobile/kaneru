@@ -1,16 +1,17 @@
 ---
-title: 'NixOS: A Developer-First Linux System'
-description: 'How Nix and NixOS could change the future of Linux. All the benefits for a developer and much more.'
+title: "NixOS: A Developer-First Linux System"
+description: "How Nix and NixOS could change the future of Linux. All the benefits for a developer and much more."
 tags: Linux
 date: 2024-01-26
 ---
+
 import Code from '../../components/Code.astro';
 
 export const components = { pre: Code }
 
 ## Introduction to Nix and NixOS
 
-**Nix** is a powerful declarative package manager that enables users to define their system's desired state through configuration files. The declarative approach means you specify *what* you want rather than *how* to achieve it. We'll explore Nix's capabilities in detail throughout this guide.
+**Nix** is a powerful declarative package manager that enables users to define their system's desired state through configuration files. The declarative approach means you specify _what_ you want rather than _how_ to achieve it. We'll explore Nix's capabilities in detail throughout this guide.
 
 **NixOS** is a Linux-based operating system built on the Nix package manager. It embraces three core principles: declarative configuration, system reproducibility, and reliable system management.
 
@@ -30,6 +31,7 @@ NixOS offers seamless system component management through its declarative config
 - Desktop environment switching (between KDE, GNOME, Hyprland, LeftWM, etc.) is handled cleanly and predictably, with automatic dependency management.
 
 Unlike traditional Linux distributions, where changing desktop environments often leads to dependency conflicts and leftover packages, NixOS manages these transitions cleanly. The system automatically handles:
+
 - Dependency resolution
 - Package removal
 - Configuration management
@@ -50,11 +52,13 @@ xserver = {
 ### System Rollback Capabilities
 
 NixOS implements a robust system versioning mechanism that enables reliable system state restoration. During boot, GRUB presents a chronological list of system configurations, allowing you to:
+
 - Boot into any previous system state
 - Verify system changes safely
 - Recover from unsuccessful configurations
 
 Example GRUB menu:
+
 ```bash filename="GRUB Menu"
 # GNU GRUB VERSION 2.02
 *NixOS - Configuration 129 (2024-01-23)
@@ -89,6 +93,7 @@ The Nix ecosystem benefits from a vibrant and growing community:
 The Nix ecosystem (Nix, NixOS, and nixpkgs) provides powerful tools for creating isolated, reproducible development environments. These environments ensure consistent development setups across teams and projects.
 
 ### Key Benefits
+
 - Project-specific dependency management
 - Reproducible development environments
 - Isolated toolchains
@@ -97,6 +102,7 @@ The Nix ecosystem (Nix, NixOS, and nixpkgs) provides powerful tools for creating
 ### Creating Development Environments
 
 Development environments in Nix are typically defined using Nix Flakes, which provide:
+
 - Deterministic builds
 - Lock file functionality
 - Dependency isolation
@@ -153,11 +159,13 @@ nix develop "github:linuxmobile/dotfiles#javascript"
 ```
 
 Upon execution, you'll enter a dedicated development shell:
+
 ```bash
 (nix:linuxmobile-env) bash-5.1$
 ```
 
 Verifying the isolated environment:
+
 ```bash
 # Check Node.js installation path
 type node
@@ -180,6 +188,7 @@ This approach extends to multiple programming languages and tools:
 ### Version Management
 
 Nix enables concurrent use of different versions:
+
 - Run Node.js 18 for legacy projects
 - Use Node.js 22 for modern applications
 - Maintain multiple versions without conflicts

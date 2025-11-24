@@ -1,5 +1,5 @@
 ---
-title: 'Solutions for AdventJS 2023 by @Midudev'
+title: "Solutions for AdventJS 2023 by @Midudev"
 description: "I explain how to apply JavaScript logic to solve Katas. Solving AdventJS 2023."
 tags: Javascript
 date: 2023-12-13
@@ -116,14 +116,14 @@ function manufacture(gifts, materials) {
 
 - `manufacture`: We're passing it two properties or arguments, `gifts` and `materials`. The list of gifts and the materials.
 - `const regex = new RegExp(^[${materials}]+${"$"});`: Here's some amazing **magic**. I used a RegEx that checks if the materials are at the beginning of each gift. `^[${materials}]+` means that _"At the beginning of each string (`^`)"_, there must be one or more (`+`) of the available materials. And the `$` indicates that it must be at the beginning and there can't be anything else after.
-`return gifts.filter(regex.test.bind(regex))`: We use a `filter`. For each gift, we check with the `RegEx` to see if it matches the materials. If it matches it stays in the list, and if not... We remove it.
+  `return gifts.filter(regex.test.bind(regex))`: We use a `filter`. For each gift, we check with the `RegEx` to see if it matches the materials. If it matches it stays in the list, and if not... We remove it.
 
 An alternative without `RegEx` could be using methods like `startsWith` or `indexOf`. For example:
 
 ```javascript
 function manufacture(gifts, materials) {
   return gifts.filter((gift) =>
-    materials.split("").every((material) => gift.includes(material))
+    materials.split("").every((material) => gift.includes(material)),
   );
 }
 ```
@@ -164,8 +164,8 @@ Keep in mind:
 
 ```javascript
 function findNaughtyStep(original, modified) {
-  const [lessWords, mostWords] = [original, modified].sort((a, b) =>
-    a.length - b.length
+  const [lessWords, mostWords] = [original, modified].sort(
+    (a, b) => a.length - b.length,
   );
   return [...mostWords].find((x, i) => lessWords[i] != x) ?? "";
 }
@@ -294,9 +294,7 @@ function cyberReindeer(road, time) {
   for (let i = 1; i < time; i++) {
     road = roadString[i] ?? road;
     s += roadDelay[road[s + 1]];
-    result.push(
-      `${road.substring(0, s)}S${road.substring(s + 1)}`,
-    );
+    result.push(`${road.substring(0, s)}S${road.substring(s + 1)}`);
   }
   return result;
 }

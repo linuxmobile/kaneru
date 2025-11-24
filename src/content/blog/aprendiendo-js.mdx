@@ -1,8 +1,8 @@
 ---
-title: 'De principiante a fullstack en Nucba: mi experiencia'
+title: "De principiante a fullstack en Nucba: mi experiencia"
 tags: Javascript
 date: 2022-10-13
-description: 'Descubre cómo pasé de principiante a programador fullstack en el bootcamp de programación Nucba con mi experiencia personal en la enseñanza de JavaScript.'
+description: "Descubre cómo pasé de principiante a programador fullstack en el bootcamp de programación Nucba con mi experiencia personal en la enseñanza de JavaScript."
 ---
 
 Tips / Consejos / Javascript
@@ -31,9 +31,9 @@ Incluído dentro de la etiqueta scripts
 ```html
 <!-- En esta situación nos saldría una alerta en el navegador que diría "hola". -->
 <body>
-	<script>
-		alert('hola')
-	</script>
+  <script>
+    alert("hola");
+  </script>
 </body>
 ```
 
@@ -61,7 +61,7 @@ alert("hola");
 
 ```js
 let message; // Let define la variable "message"
-message = 'Hola mundo'; // la variable "message" muestra 'Hola mundo'
+message = "Hola mundo"; // la variable "message" muestra 'Hola mundo'
 
 console.log(message); // Con console.log podemos ver en la consola 'Hola mundo'
 ```
@@ -69,9 +69,9 @@ console.log(message); // Con console.log podemos ver en la consola 'Hola mundo'
 **Otra forma más óptima de escribir el mismo código es:**
 
 ```js
-let message = 'Hola mundo';
+let message = "Hola mundo";
 
-console.log(message) // Muestra un "Hola mundo"
+console.log(message); // Muestra un "Hola mundo"
 ```
 
 - Declarar Varias Variables:
@@ -79,7 +79,9 @@ console.log(message) // Muestra un "Hola mundo"
 <i>Podemos declarar variables separándolas con una ',':</i>
 
 ```js
-let user = 'linuxin', age = 28, message = 'Hola mundo';
+let user = "linuxin",
+  age = 28,
+  message = "Hola mundo";
 ```
 
 🔅 Constantes:
@@ -87,9 +89,9 @@ let user = 'linuxin', age = 28, message = 'Hola mundo';
 <i>Las constantes son variables inmutables.</i>
 
 ```js
-const myBirthday = '1994-09-08'
+const myBirthday = "1994-09-08";
 
-myBirthday = '1996-10-22'; // ¡error, no se puede reasignar la constante!
+myBirthday = "1996-10-22"; // ¡error, no se puede reasignar la constante!
 ```
 
 ## Interacciones
@@ -97,23 +99,23 @@ myBirthday = '1996-10-22'; // ¡error, no se puede reasignar la constante!
 🔅 alert:
 
 ```js
-alert('hola mundo') // muestra una alerta "hola mundo" en el navegador
+alert("hola mundo"); // muestra una alerta "hola mundo" en el navegador
 ```
 
 🔅 prompt:
 
 ```js
-let age = prompt('¿Cuántos años tengo?') // Pregunta en el navegador cuántos años tengo.
+let age = prompt("¿Cuántos años tengo?"); // Pregunta en el navegador cuántos años tengo.
 
-console.log(`¡Tengo ${age} años!`) // muestra la cantidad de años.
+console.log(`¡Tengo ${age} años!`); // muestra la cantidad de años.
 ```
 
 🔅 confirm:
 
 ```js
-let isNucbaBoss = confirm('Es NUCBA el jefe?')
+let isNucbaBoss = confirm("Es NUCBA el jefe?");
 
-console.log(isNucbaBoss) // true si se pulsa OK
+console.log(isNucbaBoss); // true si se pulsa OK
 ```
 
 ## Condicionales
@@ -125,16 +127,16 @@ console.log(isNucbaBoss) // true si se pulsa OK
 </i>
 
 ```js
-let numberReal = 420
-let numberFalse = 520
+let numberReal = 420;
+let numberFalse = 520;
 
 // Si numberFalse es mayor o igual a 420, devuelve 420 klk.
-if(numberReal >= numberFalse) {
-    console.log('420 klk')
+if (numberReal >= numberFalse) {
+  console.log("420 klk");
 }
 // Si es mayor devuelve 'no es elegante este número'.
-else{
-    console.log('No es elegante este número')
+else {
+  console.log("No es elegante este número");
 }
 ```
 
@@ -142,7 +144,7 @@ else{
 
 ```js
 let accessAllowed;
-let age = prompt('¿Qué edad tenés?', '');
+let age = prompt("¿Qué edad tenés?", "");
 
 if (age > 18) {
   accessAllowed = true;
@@ -153,10 +155,10 @@ if (age > 18) {
 alert(accessAllowed);
 ```
 
-<i>El __operador ternario__ permite ejecutar esto mismo de manera más sencilla.</i>
+<i>El **operador ternario** permite ejecutar esto mismo de manera más sencilla.</i>
 
 ```js
-let accessAllowed = age > 18 ? true : false
+let accessAllowed = age > 18 ? true : false;
 ```
 
 ## Bucles | For y While
@@ -166,10 +168,10 @@ let accessAllowed = age > 18 ? true : false
 🔅 While (mientras):
 
 ```js
-let i = 0 // Declaramos una variable.
+let i = 0; // Declaramos una variable.
 while (i < 3) {
-	console.log(i) // muestra 0, luego 1, luego 2..
-	i++
+  console.log(i); // muestra 0, luego 1, luego 2..
+  i++;
 }
 ```
 
@@ -179,20 +181,23 @@ while (i < 3) {
 
 ```js
 // Declaramos la variable personas...
-let personas = ['Santiago', 'Juan', 'David', 'Angel', 'Franco', 'Camila']
+let personas = ["Santiago", "Juan", "David", "Angel", "Franco", "Camila"];
 
 // Y con for recorremos los nombres de personas
 // hasta la última letra. (Santiago tiene 7 carácteres (0-7))
 for (let index = 0; index < personas.length; index++) {
-	personas[index] == 'Santiago'
-	'Santiago'.length - 1 == 7
-	'Santiago'[7] == 'o'
+  personas[index] == "Santiago";
+  "Santiago".length - 1 == 7;
+  "Santiago"[7] == "o";
 
-	// Si la última letra es la L. Entonces para de contar.
-	if (personas[index][personas[index].length - 1] == 'l') {
-		break
-	}
-	console.log('Hola ' + personas[index])
+  // Si la última letra es la L. Entonces para de contar.
+  if (personas[index][personas[index].length - 1] == "l") {
+    break;
+  }
+  console.log("Hola " + personas[index]);
 }
 ```
-````
+
+```
+
+```

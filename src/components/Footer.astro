@@ -2,15 +2,15 @@
 const currentYear = new Date().getFullYear();
 ---
 
-<footer class="bg-gray-800 p-1 px-2 text-xs flex items-center justify-between">
-  <div class="text-center text-gray-300">
+<footer class="h-full bg-jp-dark-secondary text-xs flex items-center justify-between">
+  <div class="text-center text-jp-white/60 px-2 py-1">
     <span>{currentYear}</span>
     <span> © Not really copyrighted, but we pretend it is.</span>
   </div>
   <div class="">
-    <nav class="px-1 flex items-center justify-center gap-x-3">
-      <a href="https://github.com/linuxmobile/kaneru" class="!text-jp-white">Github</a>
-      <a href="https://twitter.com/LinuDev" class="!text-jp-white">Twitter</a>
+    <nav class="flex items-center justify-center [&>a]:p-1 [&>a]:px-2">
+      <a href="https://github.com/linuxmobile/kaneru" class="!text-jp-dark-primary bg-gray-200">Github</a>
+      <a href="https://twitter.com/LinuDev" class="!text-jp-dark-primary bg-sky-500">Twitter</a>
     </nav>
   </div>
 </footer>

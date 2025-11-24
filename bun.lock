@@ -5,6 +5,7 @@
       "name": "kaneru",
       "dependencies": {
         "@astrojs/mdx": "4.3.1",
+        "@webtui/css": "^0.1.4",
         "astro": "5.12.3",
         "date-fns": "^4.1.0",
         "timeago.js": "^4.0.2",
@@ -304,6 +305,8 @@
     "@vue/server-renderer": ["@vue/server-renderer@3.5.13", "", { "dependencies": { "@vue/compiler-ssr": "3.5.13", "@vue/shared": "3.5.13" }, "peerDependencies": { "vue": "3.5.13" } }, "sha512-wAi4IRJV/2SAW3htkTlB+dHeRmpTiVIK1OGLWV1yeStVSebSQQOwGwIq0D3ZIoBj2C2qpgz5+vX9iEBkTdk5YA=="],
 
     "@vue/shared": ["@vue/shared@3.5.13", "", {}, "sha512-/hnE/qP5ZoGpol0a5mDi45bOd7t3tjYJBjsgCsivow7D48cJeV5l05RD82lPqi7gRiphZM37rnhW1l6ZoCNNnQ=="],
+
+    "@webtui/css": ["@webtui/css@0.1.4", "", {}, "sha512-ahFXXvxSC4R/+eE1vCjJVyusJyufJgiKY0DbbX1WArzE/Ix5Wkchh9aKQXGr035a6JFCCb+oc7vzlIOcYJ019w=="],
 
     "acorn": ["acorn@8.14.1", "", { "bin": { "acorn": "bin/acorn" } }, "sha512-OvQ/2pUDKmgfCg++xsTX1wGxfTaszcHVcTctW4UJB4hibJx2HXxxO5UmVgyjMa+ZDsiaf5wWLXYpRWMmBI0QHg=="],
 

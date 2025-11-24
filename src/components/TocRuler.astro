@@ -23,7 +23,7 @@ else rulerHeightClass = 'h-128';
 ---
 
 {headings.length > 0 && (
-  <div id="toc-ruler" class={`fixed left-8 top-1/2 -translate-y-1/2 flex flex-col items-center hidden md:flex ${rulerHeightClass}`}>
+  <div id="toc-ruler" class={`fixed left-8 top-1/2 -translate-y-1/2 flex flex-col items-center ${rulerHeightClass}`}>
     <div class="relative h-full w-full">
       {headings.map((heading, index) => (
         <a

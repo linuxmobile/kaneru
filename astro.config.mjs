@@ -14,5 +14,8 @@ export default defineConfig({
 	site: "https://kaneru.netlify.app/",
 	markdown: {
 		gfm: true,
+		shikiConfig: {
+			theme: "poimandres",
+		},
 	},
 });
