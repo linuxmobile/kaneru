@@ -1,0 +1,22 @@
+---
+import BlockHeader from "~/components/BlockHeader.astro";
+---
+
+<section class="my-6">
+  <div class="flex flex-col items-center justify-around sm:gap-5 max-w-full mb-6">
+    <div class="w-full flex items-center justify-start relative select-none">
+      <span
+        class="absolute font-jp-head text-background dark:text-accent text-5xl -bottom-0 left-0 mix-blend-difference"
+        >カーネル</span
+      >
+      <h1 class="text-accent text-9xl font-title">Kaneru</h1>
+    </div>
+    <BlockHeader jpTitle="会社概要" title="About">
+      <div class="px-3 py-8">
+        <div class:list={['max-w-full leading-5 flex flex-col gap-y-3']}>
+          <slot />
+        </div>
+      </div>
+    </BlockHeader>
+  </div>
+</section>

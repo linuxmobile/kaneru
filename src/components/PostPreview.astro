@@ -1,0 +1,78 @@
+---
+import { type CollectionEntry, render } from "astro:content";
+import PostInfo from "~/components/PostInfo.astro";
+import Tags from "~/components/Tags.astro";
+import { getArticleNumber } from "~/plugins/remark-article-numbers";
+import type { Collation } from "~/types";
+import { TagsGroup } from "~/utils";
+
+interface Props {
+	post: CollectionEntry<"blog">;
+	index?: number;
+	totalCount?: number;
+	pageSize?: number;
+	currentPage?: number;
+	globalIndex?: number;
+}
+
+const { post, index, totalCount, pageSize, currentPage, globalIndex } =
+	Astro.props;
+
+const isNotHome = Astro.url.pathname !== "/";
+
+const { remarkPluginFrontmatter } = await render(post);
+const description =
+	remarkPluginFrontmatter.description || post.data.description;
+let tags: Collation<"blog">[] | undefined;
+if (post.data.tags && post.data.tags.length > 0) {
+	const tagsGroup = await TagsGroup.build();
+	tags = tagsGroup.matchMany(post.data.tags);
+}
+const samePage = Astro.url.pathname === `/blog/${post.id}`;
+const articleLink = samePage ? `#${post.id}` : `/blog/${post.id}`;
+
+const articleNumber =
+	index !== undefined && totalCount !== undefined
+		? getArticleNumber({
+				index,
+				totalCount,
+				pageSize,
+				currentPage,
+        globalIndex
+			})
+		: "00";
+---
+<article class="pt-6 w-full flex">
+  <div class="flex flex-col items-center justify-center w-fit border-1 border-accent">
+    <p
+      class="h-full w-full flex items-center justify-center bg-accent text-center text-background py-1"
+    >
+      品番
+    </p>
+    <p class="h-full flex items-center justify-center px-2 py-1">
+      <span class="text-accent">#0</span>{articleNumber}
+    </p>
+  </div>
+  <div class="w-full px-2 border-r border-t border-b border-accent py-2">
+    <PostInfo post={post} />
+    <h1 class="text-accent text-xl font-medium">
+  {
+    samePage ? (
+      <span>{post.data.title}</span>
+    ) : (
+      <a href={articleLink} class="hover:underline">{post.data.title}</a>
+    )
+  }
+</h1>
+  {isNotHome && (
+    <div>
+      <!-- {description && <p class="text-foreground">{description}</p>} -->
+      {tags && (
+        <div >
+          <Tags tags={tags} />
+        </div>
+      )}
+    </div>
+  )}
+  </div>
+</article>

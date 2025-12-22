@@ -1,0 +1,16 @@
+---
+const { jpTitle, title } = Astro.props;
+---
+<section class="border border-accent my-12 relative">
+  <div class="absolute -top-4 left-3 select-none">
+    <div class="relative bg-accent px-4 py-1 w-fit whitespace-nowrap">
+      <p
+        class="font-jp-head text-3xl text-background dark:text-accent mix-blend-difference absolute bottom-5 left-0"
+      >
+        {jpTitle}
+      </p>
+      <h2 class="font-bold text-background px-2">{title}</h2>
+    </div>
+  </div>
+  <slot />
+</section>

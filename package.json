@@ -1,23 +1,69 @@
 {
-  "name": "kaneru",
-  "type": "module",
-  "version": "0.0.1",
-  "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro"
-  },
-  "dependencies": {
-    "@astrojs/mdx": "4.3.1",
-    "@webtui/css": "^0.1.4",
-    "astro": "5.12.3",
-    "date-fns": "^4.1.0",
-    "timeago.js": "^4.0.2"
-  },
-  "devDependencies": {
-    "@unocss/astro": "^66.1.0-beta.12",
-    "@unocss/reset": "^66.1.0-beta.11",
-    "unocss": "^66.1.0-beta.12"
-  }
+	"name": "Kaneru",
+	"description": "A terminal-inspired coding blog built with Astro.",
+	"type": "module",
+	"version": "1.0.0",
+	"scripts": {
+		"dev": "astro dev",
+		"build": "astro build",
+		"postbuild": "pagefind --site dist",
+		"preview": "astro preview",
+		"astro": "astro"
+	},
+	"dependencies": {
+		"@astrojs/markdown-remark": "6.3.10",
+		"@astrojs/mdx": "4.3.13",
+		"@astrojs/rss": "4.0.14",
+		"@astrojs/sitemap": "3.6.0",
+		"@astrojs/ts-plugin": "1.10.6",
+		"@expo-google-fonts/dela-gothic-one": "^0.4.1",
+		"@expo-google-fonts/geist-mono": "^0.4.1",
+		"@expressive-code/plugin-line-numbers": "^0.41.3",
+		"@fontsource-variable/geist-mono": "^5.2.7",
+		"@fontsource/dela-gothic-one": "^5.2.7",
+		"@fontsource/dotgothic16": "^5.2.8",
+		"@fontsource/fusion-pixel-10px-monospaced-jp": "^5.2.5",
+		"@pagefind/default-ui": "^1.4.0",
+		"@resvg/resvg-js": "^2.6.2",
+		"@tailwindcss/vite": "^4.1.13",
+		"@types/hast": "^3.0.4",
+		"@types/react": "^19.1.12",
+		"@types/react-dom": "^19.1.9",
+		"astro": "5.16.6",
+		"astro-expressive-code": "^0.41.3",
+		"color": "^5.0.0",
+		"date-fns": "^4.1.0",
+		"emoji-regex": "^10.5.0",
+		"gemoji": "^8.1.0",
+		"hast-util-from-html-isomorphic": "^2.0.0",
+		"hastscript": "^9.0.1",
+		"katex": "^0.16.22",
+		"markdown-it": "^14.1.0",
+		"mdast-util-directive": "^3.1.0",
+		"mdast-util-to-string": "^4.0.0",
+		"reading-time": "^1.5.0",
+		"rehype-autolink-headings": "^7.1.0",
+		"rehype-external-links": "^3.0.0",
+		"rehype-katex": "^7.0.1",
+		"rehype-unwrap-images": "^1.0.0",
+		"remark-directive": "^4.0.0",
+		"remark-math": "^6.0.0",
+		"sanitize-html": "^2.17.0",
+		"satori": "^0.18.2",
+		"satori-html": "^0.3.2",
+		"tailwindcss": "^4.1.13",
+		"typescript": "^5.9.2",
+		"unified": "^11.0.5"
+	},
+	"devDependencies": {
+		"@types/bun": "^1.3.4",
+		"@types/markdown-it": "^14.1.2",
+		"@types/sanitize-html": "^2.16.0",
+		"pagefind": "^1.4.0",
+		"sass-embedded": "^1.92.1"
+	},
+	"private": true,
+	"peerDependencies": {
+		"typescript": "^5"
+	}
 }

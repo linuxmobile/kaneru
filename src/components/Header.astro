@@ -1,11 +1,91 @@
 ---
+import LightDarkAutoButton from "~/components/LightDarkAutoButton.astro";
+import NavLink from "~/components/NavLink.astro";
+import Search from "~/components/Search.astro";
+import SelectTheme from "~/components/SelectTheme.astro";
+import siteConfig from "~/site.config";
+
+const lightDarkAutoTheme = siteConfig.themes.mode === "light-dark-auto";
+const selectTheme =
+	siteConfig.themes.mode === "select" && siteConfig.themes.include.length > 1;
+
 const currentPath = Astro.url.pathname;
 const currentUrl = Astro.url.origin + currentPath;
 ---
 
-<header class="w-full bg-jp-dark-secondary">
-  <nav class="text-xs flex items-center justify-between">
-    <a href="/" class="!text-jp-dark-primary bg-accent p-1">{currentUrl}</a>
-    <a href="https://github.com/linuxmobile/kaneru" class="!text-jp-dark-primary bg-functions p-1">v0.1.2</a>
+<header>
+  <div class="relative flex items-center justify-between bg-accent px-1 text-sm">
+    <a
+      id="logo"
+      href="/"
+      class="block max-w-full no-underline items-center bg-accent text-background font-pixel"
+    >
+      {currentUrl}
+    </a>
+    <div class="flex items-center gap-3">
+      <Search trailingSlashes={siteConfig.trailingSlashes} />
+      {lightDarkAutoTheme && <LightDarkAutoButton />}
+      {selectTheme && <SelectTheme />}
+      <nav id="nav-mobile" aria-label="Menu" class="text-accent sm:hidden">
+        <button
+          id="nav-mobile-button"
+          class="px-3 py-1 h-full cursor-pointer border-2 bg-background"
+          type="button"
+          aria-expanded="false"
+          aria-controls="nav-menu-list"
+        >
+          ▾
+        </button>
+        <ul
+          id="nav-mobile-list"
+          class="invisible absolute flex flex-col bg-background shadow text-accent border-2 m-0 p-2.5 top-11.5 left-auto right-0 z-50"
+        >
+          {
+            siteConfig.navLinks.map((link) => (
+              <li class="p-1" aria-expanded="false">
+                <NavLink link={link} />
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </div>
+  </div>
+  <!-- Navigation links -->
+  <nav aria-label="Menu" class="font-pixel text-accent text-sm hidden sm:block">
+    <ul class="flex flex-row text-accent">
+      {
+        siteConfig.navLinks.map((link) => (
+          <li class="py-1 bg-transparent hover:bg-accent hover:text-background transition-color">
+            <NavLink link={link} />
+          </li>
+        ))
+      }
+    </ul>
   </nav>
 </header>
+
+<script>
+  const navMobileButton = document.getElementById('nav-mobile-button')
+  const navMobileList = document.getElementById('nav-mobile-list')
+  const navMobileListItems = navMobileList?.querySelectorAll('li')
+  const toggleNavMobileMenu = (action: 'on' | 'off' | 'toggle') => {
+    let isNowOpen: boolean = false
+    if (action === 'on') {
+      isNowOpen = true
+      navMobileList?.classList.remove('invisible')
+    } else if (action === 'off') {
+      isNowOpen = false
+      navMobileList?.classList.add('invisible')
+    } else {
+      isNowOpen = !navMobileList?.classList.toggle('invisible')
+    }
+    navMobileButton?.setAttribute('aria-expanded', isNowOpen ? 'true' : 'false')
+    navMobileListItems?.forEach((listItem) => {
+      listItem.setAttribute('aria-expanded', isNowOpen ? 'true' : 'false')
+    })
+  }
+  navMobileButton?.addEventListener('click', (_ev) => {
+    toggleNavMobileMenu('toggle')
+  })
+</script>

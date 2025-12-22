@@ -1,0 +1,533 @@
+---
+title: "Code, Robots & Remote Life: My Journey as a Mobile Developer in Robotics"
+description: "A behind-the-scenes look at developing mobile interfaces for robots while working remotely, from daily routines to technical challenges."
+draft: false
+tags: [Mobile Development]
+published: 2025-03-20
+---
+
+## Introduction
+
+When I first started tinkering with React components in my cramped apartment, I never imagined I'd one day be writing code that makes **robots** move. Yet here I am, four years later, working remotely as a **mobile developer** in the robotics sector a career pivot that's been as challenging as it is rewarding.
+
+### From Frontend to Robotics: An Unexpected Journey
+
+My journey began like many developers building websites and struggling with CSS. Then came an opportunity that changed everything:
+
+```jsx title="before-after-comparison.jsx"
+// What I used to write (simplified)
+const LandingPage = () => (
+  <div className="hero">
+    <h1>Welcome to Our Website</h1>
+    <Button onClick={showPricing}>View Plans</Button>
+  </div>
+);
+
+// What I write now
+const RobotController = () => {
+  const [robotStatus, setRobotStatus] = useState("idle");
+
+  const initiateMovement = async () => {
+    try {
+      setRobotStatus("moving");
+      await roboticsAPI.sendCommand({
+        movement: "forward",
+        velocity: 0.5,
+        collisionDetection: true,
+      });
+    } catch (error) {
+      console.error("Movement failed:", error);
+      setRobotStatus("error");
+    }
+  };
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <StatusIndicator current={robotStatus} />
+      <TouchableOpacity
+        style={styles.controlButton}
+        onPress={initiateMovement}
+        disabled={robotStatus === "moving"}
+      >
+        <Text>Activate</Text>
+      </TouchableOpacity>
+    </SafeAreaView>
+  );
+};
+```
+
+The transition from manipulating DOM elements to sending commands that control physical machines was mind-blowing. Suddenly, a UI bug wasn't just an aesthetic issue it could mean a **physical response** happening incorrectly in the real world.
+
+### Remote Work in a Physical-First Industry
+
+Working remotely in robotics creates a fascinating paradox. I'm developing interfaces for machines I rarely see in person, relying on:
+
+- **Virtual simulators** that mimic robot behavior
+- **Video feeds** from on-site engineers
+- **Detailed telemetry data** streaming in real-time
+
+The most surprising challenge wasn't technical was **communication**. When your code connects to physical hardware, explaining a bug fix to teammates requires extra precision:
+
+> "No, the robot isn't recognizing the stop command because we're handling the WebSocket reconnection incorrectly in the React Native bridge, not because the control panel design is confusing."
+
+My daily standup often includes phrases you'd never hear in typical frontend roles: "I fixed the latency issue when streaming the robot's camera feed" or "I need to optimize battery consumption monitoring on older Android devices."
+
+Despite never meeting our robots in person (thanks to our confidentiality agreements, I can't share specifics), the **remote collaboration tools** we've built have made distance almost irrelevant.
+
+## My Daily Routine as a Remote Developer
+
+My daily routine as a robotics mobile developer is shaped by both geography and technology constraints. Working from **Argentina** for a company based in **Germany** means my schedule looks nothing like what I expected when I joined this field.
+
+### Setting Up a Command Center
+
+My workspace is modest but effective:
+
+- A laptop connected to an external monitor: code on one screen, **robot simulator** on the other
+- A collection of Android test devices (sadly, no iOS hardware on that challenge later)
+
+```jsx title="platform-testing.jsx"
+// How I handle the iOS testing challenge without devices
+const PlatformSpecificTesting = () => {
+  // For Android, I test directly on devices
+  if (Platform.OS === "android") {
+    return <LiveDeviceTesting />;
+  }
+
+  // For iOS, I rely on these alternatives
+  return (
+    <>
+      <RemoteSimulatorTesting
+        onLogCapture={saveTestResults}
+        simulatorType="iPhone 14 Pro"
+      />
+      <TeamSharedTestingSlot
+        requestAccess={needsIOSVerification}
+        timeSlot="16:00-17:00 CET"
+      />
+    </>
+  );
+};
+```
+
+The biggest workspace challenge wasn't equipment was **network reliability**. When your commit might literally make a robot move (or stop moving!), you need rock-solid internet.
+
+### Time-Zone Tetris
+
+My day starts at an eye-watering **1:30 AM** and runs until **11:30 AM** Argentina time to align with German business hours:
+
+- **1:30-3:30 AM**: Overlap with the end of the German workday daily standup and critical discussions happen here
+- **3:30-7:00 AM**: Deep focus time when bug fixes and feature work happens
+- **7:00-11:30 AM**: Testing, documentation, and async communication
+
+The schedule is brutal, but it comes with a silver lining. Being the early bird means I catch the beginning of Germany's workday while most of my Argentine colleagues are still sleeping. This gives me the opportunity to **learn directly** from senior engineers when critical decisions are being made.
+
+This unusual schedule has been valuable for my growth, especially since robotics was completely new territory for me two years ago. Starting my day when both my brain and the German team are at peak performance has helped me absorb knowledge from the senior robotics engineers.
+
+### Tools of the Remote Robotics Trade
+
+Without prior robotics experience, I've become heavily dependent on:
+
+- **Virtual simulators** that let me test how my UI changes might affect robot behavior
+- **Extensive logging** that tracks every interaction between the mobile app and robot systems
+- **Remote access to test environments** where I can safely experiment
+
+The most valuable investment was learning to use debugging tools effectively:
+
+```jsx title="command-tracker-middleware.jsx"
+// Custom debugging middleware for React Native
+const robotCommandTracker = (store) => (next) => (action) => {
+  // Only track robot commands
+  if (action.type.startsWith("robot/command")) {
+    console.log(`🤖 Command issued: ${action.type}`, {
+      parameters: action.payload,
+      timestamp: new Date().toISOString(),
+      appState: store.getState().robotStatus,
+    });
+
+    // Send to our remote monitoring system
+    if (action.payload.priority === "critical") {
+      alertDevOpsTeam({
+        commandType: action.type,
+        issuer: "mobile-app",
+        timestamp: Date.now(),
+      });
+    }
+  }
+
+  return next(action);
+};
+```
+
+Despite having never touched a robot before this job, these tools have helped me bridge the knowledge gap. The most surprising revelation? Many of the **reactive programming principles** I learned in frontend work apply beautifully to robotics interfaces they're just controlling servos instead of slideshows.
+
+## The Technology Stack: React Native
+
+Our mobile robotics interfaces are built with **React Native**, with native modules written in **Kotlin** by our senior developers. As a React Native developer, I focus on creating the user interfaces that communicate with these native modules.
+
+### React Native for Robotics Control
+
+React Native gives us the **cross-platform advantages** we desperately need, while the native modules provide the **performance** required for hardware communication:
+
+```jsx title="robot-controller.jsx"
+// React Native component for a robotics control interface
+const RobotController = () => {
+  const [motorSpeed, setMotorSpeed] = useState(0);
+  const [isConnected, setIsConnected] = useState(false);
+
+  useEffect(() => {
+    // Bridge to native module (written by our senior devs)
+    RobotBridge.connectToDevice()
+      .then(() => setIsConnected(true))
+      .catch((err) => console.error("Connection failed:", err));
+
+    return () => {
+      RobotBridge.disconnectFromDevice();
+    };
+  }, []);
+
+  const handleSpeedChange = (speed) => {
+    setMotorSpeed(speed);
+    RobotBridge.setMotorSpeed(speed);
+  };
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <StatusIndicator connected={isConnected} />
+      <Text style={styles.speedLabel}>Motor Speed: {motorSpeed}%</Text>
+      <Slider
+        value={motorSpeed}
+        onValueChange={handleSpeedChange}
+        minimumValue={0}
+        maximumValue={100}
+        step={1}
+      />
+      <TouchableOpacity
+        style={styles.emergencyButton}
+        onPress={() => RobotBridge.emergencyStop()}
+      >
+        <Text style={styles.buttonText}>EMERGENCY STOP</Text>
+      </TouchableOpacity>
+    </SafeAreaView>
+  );
+};
+```
+
+### Challenges I've Faced
+
+Building these interfaces hasn't been without struggles:
+
+1. **Latency concerns**: When controlling robotics hardware, even 100ms delays can matter. I've had to learn optimization techniques to minimize overhead.
+
+2. **Complex state management**: Tracking various hardware states required me to level up my Redux skills quickly with help from senior team members.
+
+3. **Debugging across layers**: Tracing issues that cross the JS-Native boundary is often challenging - I've learned to add extensive logging.
+
+### What I've Learned
+
+Coming from web frontend, the biggest eye-opener was how **mobile interfaces for hardware require different design thinking**. When an interface controls physical machines, you need:
+
+- Clear visual feedback for connection status
+- Predictable, immediate response to user input
+- Robust error states that prevent dangerous operations
+
+## Virtual Collaboration in a Technical Environment
+
+Working with people I've never met in person to build interfaces for robots I've never touched sounds like a recipe for disaster. Yet somehow, we make it work though not without significant challenges.
+
+### The Rhythm of Daily Standups in a Distributed Team
+
+Our daily standups happen at what my local friends call "vampire hours" **2:00 AM Argentina time**. Despite the odd timing, these 15-minute sessions have become my lifeline to the team.
+
+The most valuable standup ritual we've developed is our **"demo or it didn't happen"** approach. If someone claims to have fixed a UI issue or improved robot response time, they share their screen and demonstrate it live. This practice has helped me learn tremendously from seeing my colleagues' solutions.
+
+### Handling Code Reviews Without Physical Presence
+
+Code reviews have become my primary learning opportunity. When senior engineers review my code, they provide detailed feedback that has accelerated my growth.
+
+Our team has an unspoken formula for reviewing mobile-to-robot interface code:
+
+1. **Functionality**: Does it accomplish the task?
+2. **Safety**: Are there fail-safes for connection issues or unexpected inputs?
+3. **Performance**: Will it introduce latency that could affect robot operation?
+4. **Usability**: Is it intuitive for operators who may be focused on the robot, not the screen?
+
+The biggest adjustment was learning that **robot-control interfaces have higher quality standards** than typical apps. A bug in a social media app might annoy users; a bug in our app could have physical consequences. That reality has made me a much more careful developer.
+
+## Developing Apps for Robotics: A Unique Challenge
+
+When I transitioned from frontend to mobile development for robotics, I discovered that building these interfaces requires a completely different mindset. Creating mobile apps that control physical machines isn't just about pretty UI it's about **responsibility** and **precision**.
+
+### Creating Intuitive Mobile Interfaces for Complex Operations
+
+My first robotics interface was a disaster. I approached it like any other app, focusing on animations and visual polish. The senior developers quickly corrected me:
+
+"This isn't Instagram. Every button needs to have a **clear purpose** and **predictable outcome**. The operator might be focusing on the robot, not your fancy transitions."
+
+The key lesson was designing for **split attention**. Operators are watching both the physical robot and your app simultaneously, so interfaces need to be:
+
+- **Glanceable**: Status information visible at a quick look
+- **Error-resistant**: Making destructive actions difficult to trigger accidentally
+- **Feedback-rich**: Clear confirmation when commands are sent and received
+
+```jsx title="motor-control-button.jsx"
+// Example of how we handle critical actions with confirmation
+const MotorControlButton = ({ action, power }) => {
+  const [isPending, setIsPending] = useState(false);
+
+  const handlePress = () => {
+    // For high-power actions, we require confirmation
+    if (power > 0.7) {
+      setIsPending(true);
+    } else {
+      executeCommand(action, power);
+    }
+  };
+
+  return (
+    <>
+      <TouchableOpacity
+        style={[styles.actionButton, power > 0.7 && styles.highPowerAction]}
+        onPress={handlePress}
+      >
+        <Text>{action}</Text>
+        {power > 0.5 && <PowerIndicator level={power} />}
+      </TouchableOpacity>
+
+      {isPending && (
+        <ConfirmationModal
+          message={`Confirm ${action} at ${power * 100}% power?`}
+          onConfirm={() => {
+            executeCommand(action, power);
+            setIsPending(false);
+          }}
+          onCancel={() => setIsPending(false)}
+        />
+      )}
+    </>
+  );
+};
+```
+
+### Testing Strategies When Working Remotely from Hardware
+
+Testing became my biggest challenge. How do you test a mobile app that controls a robot you can't see? Our team has developed a multi-stage approach:
+
+1. **Simulator testing**: We have a virtual robot environment that mimics basic responses
+2. **Remote observer testing**: I watch via video call while an on-site engineer uses my build
+3. **Telemetry validation**: Every command sent from the app is logged with timestamps, which we compare against robot action logs
+
+The most important testing tool is our **command auditing system**:
+
+```jsx title="command-tracker.jsx"
+// Our command tracking system
+const trackCommand = (commandType, parameters) => {
+  // Log locally
+  console.log(`Command issued: ${commandType}`, parameters);
+
+  // Send to analytics
+  analytics.logEvent("robot_command", {
+    command: commandType,
+    params: parameters,
+    timestamp: Date.now(),
+    appVersion: DeviceInfo.getVersion(),
+    connectionQuality: netInfo.details.strength || "unknown",
+  });
+
+  // If this is a critical command, notify the testing team
+  if (CRITICAL_COMMANDS.includes(commandType)) {
+    notifyTestingTeam({
+      command: commandType,
+      timestamp: new Date().toISOString(),
+    });
+  }
+};
+```
+
+### UX Considerations When Designing Controls for Physical Systems
+
+The biggest UX revelation was that **latency matters more than aesthetics**. A 300ms delay on a button animation is imperceptible in a social app, but when controlling robot movement, it can make operations feel disconnected and unsafe.
+
+I've learned from our senior designers that these UX principles are critical:
+
+- **Command visualization**: Every action shows its progress state clearly
+- **Fail states**: Network issues are handled gracefully with options to retry
+- **Mode awareness**: The app always clearly indicates the robot's current operational mode
+
+Perhaps the most important lesson: **safety trumps convenience**. We've intentionally made certain operations slightly more difficult to perform when they could potentially cause physical harm if triggered accidentally.
+
+## The Remote Work Experience in a Hardware-Focused Field
+
+Working remotely while developing interfaces for physical robots creates a unique set of challenges that I didn't anticipate when I took this position. After two years in this setup, I've learned it's possible but definitely not ideal.
+
+### Building Professional Relationships in a Distributed Team
+
+The most counter-intuitive discovery was how **technical challenges** actually accelerated relationship-building. When your team is debugging why a robot isn't responding to the mobile interface, the usual small talk barriers disappear:
+
+```jsx title="robot-connection.jsx"
+// This code snippet sparked a 2-hour debugging session that
+// turned strangers into colleagues
+const connectToRobot = async () => {
+  try {
+    setConnecting(true);
+    await RobotConnectionManager.connect({
+      deviceId,
+      timeout: 5000,
+      retryAttempts: 3,
+    });
+    setConnected(true);
+  } catch (error) {
+    // This seemingly simple error handling
+    // led to deep conversations about network reliability
+    setConnectionError(error.message);
+    logAnalytics("connection_failed", { reason: error.code });
+  } finally {
+    setConnecting(false);
+  }
+};
+```
+
+These debugging sessions revealed more about my colleagues' problem-solving styles than months of casual conversations might have. I've found myself developing professional relationships with people I've never met in person bound together by the shared experience of solving complex technical problems.
+
+### Maintaining Work-Life Balance with Challenging Hours
+
+The unusual hours (remember my 1:30 AM start time?) initially wreaked havoc on my personal life. I've since developed a rhythm that works:
+
+- **Hard boundaries** around my afternoon free time
+- A **dedicated workspace** that I completely leave when my shift ends
+- **Blackout curtains** and a serious sleep schedule
+
+The most effective technique has been creating clear **context shifts** between work and personal time. When I log off, I physically unplug my development devices and switch to a different computer for personal projects. This mental separation prevents the "always on" feeling that remote work can create.
+
+### Overcoming Isolation While Working on Cutting-Edge Tech
+
+The isolation of remote work hit hardest when tackling **new technical territory**. Learning robotics interfaces without in-person mentorship was initially daunting. I combat this by:
+
+- Creating a personal knowledge base documenting everything I learn
+- Scheduling regular 1:1 video calls with senior team members
+- Asking lots of questions, even if they seem basic
+
+Despite these efforts, there's no substitute for being physically present with the hardware and senior engineers. I've had to work twice as hard to understand concepts that would be immediately clear if I could simply see the robot in action or watch over a senior developer's shoulder.
+
+### The Reality of Remote Work in Hardware-Adjacent Fields
+
+Though I've adapted to remote work, I wouldn't recommend it for junior developers in robotics. The challenges include:
+
+1. **Knowledge gaps** that are difficult to fill without physical presence
+2. **Communication barriers** when describing hardware behavior
+3. **Learning delays** without immediate feedback on physical interactions
+
+```jsx title="error-handling.jsx"
+// My error handling evolved to compensate for remote work limitations
+const handleError = (error, context) => {
+  // Classify error type
+  const errorType = categorizeError(error);
+
+  // Log detailed information for remote debugging
+  logger.error(`${context} failed: ${error.message}`, {
+    errorCode: error.code,
+    componentState: currentState,
+    connectionStatus: networkInfo.current,
+    lastRobotCommand: commandHistory[commandHistory.length - 1],
+    deviceInfo: Platform.constants,
+  });
+
+  // Show appropriate UI feedback
+  if (errorType === "CONNECTION") {
+    setConnectionError(true);
+    showReconnectionOptions();
+  } else if (errorType === "ROBOT_COMMAND") {
+    setCommandError(error.details);
+    vibrate(); // Physical feedback is important for robot control apps
+  } else {
+    setGeneralError(error.message);
+  }
+};
+```
+
+Working remotely on physical systems has forced me to become a more thorough developer I can't rely on physical presence to solve problems, so my code and documentation must compensate for that distance. It's a valuable skill, but it comes at the cost of slower professional growth.
+
+## Lessons Learned and Advice
+
+After two years of developing mobile interfaces for robotics while working remotely, I've gathered insights that go well beyond coding skills. This journey has transformed me as a developer in ways I never expected.
+
+### Skills Beyond Code That Matter in Remote Robotics Work
+
+The most valuable skills I've developed weren't technical but **metacognitive**:
+
+- **Extreme precision in communication**: When explaining a UI bug that affects robot movement, vague descriptions can lead to dangerous misunderstandings.
+- **Systematic debugging**: I've learned to isolate variables methodically when troubleshooting across the physical-digital divide.
+- **Adaptability to uncertainty**: Working with hardware remotely means accepting that some factors are outside your control.
+
+My biggest growth came in **documentation habits**. I now document everything obsessively not just for others, but for my future self:
+
+```jsx title="robot-activation.jsx"
+// Before joining robotics, my comments were basic
+function handlePress() {
+  // Handle the button press
+  sendCommand();
+}
+
+// Now I document with precision
+function handleRobotActivation() {
+  // Initiates robot movement sequence with safety checks
+  // CAUTION: This triggers physical movement
+  // Requires: Active connection (see connectionManager.isConnected)
+  // Returns: Promise resolving when command acknowledgment received
+  // Failure modes: Network timeout, robot safety override, low battery
+  sendRobotCommand(COMMAND_TYPES.ACTIVATE);
+}
+```
+
+### Tips for Those Interested in Remote Hardware-Adjacent Roles
+
+If you're considering a similar path, here's what I wish I'd known:
+
+1. **Try to avoid remote work for hardware projects if possible**, especially as a junior developer. The learning curve is steeper without physical proximity.
+
+2. If remote is your only option, **build a robust home setup** with backup internet solutions. When your code controls physical objects, connectivity issues become critical.
+
+3. **Develop visualization skills** to mentally map what's happening with hardware you can't see. I spent hours watching robot operation videos to understand movement patterns.
+
+4. **Learn to ask better questions**. Instead of "Is the robot working?", I ask "When you press the forward control, does the robot move smoothly without delay, or is there lag before movement starts?"
+
+### How to Succeed Without Physical Proximity to the Product
+
+The biggest challenge was developing intuition for hardware I couldn't touch. These strategies helped, though they're all imperfect substitutes for being there:
+
+- **Request video documentation** of everything normal operation, error states, user interactions.
+- **Set up virtual pairing sessions** with on-site engineers who can be your "hands."
+- **Create detailed mental models** of the system architecture to compensate for lack of physical presence.
+
+The most effective approach was implementing **comprehensive telemetry** in our app:
+
+```jsx title="robot-telemetry-hook.jsx"
+// Telemetry hook that helps bridge the physical distance
+const useRobotTelemetry = (robotId) => {
+  const [telemetry, setTelemetry] = useState({});
+
+  useEffect(() => {
+    const subscription = telemetryService.subscribe(robotId, (data) => {
+      setTelemetry(data);
+
+      // Log important state changes for async team review
+      if (data.batteryLevel < 20 || data.errorState) {
+        logger.warn("Critical robot state detected", data);
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [robotId]);
+
+  return telemetry;
+};
+```
+
+This constant stream of data became my lifeline to understanding the physical world my code was affecting, but it's still a pale substitute for being able to observe the hardware directly.
+
+### Final Thoughts on Remote Development for Physical Systems
+
+Despite making it work, I believe **on-site work is preferable for hardware-adjacent development**, especially for junior developers. The knowledge transfer is more efficient, the feedback loop is tighter, and the learning curve is less steep.
+
+If you do find yourself in a remote robotics role, over-invest in communication tools, documentation, and building strong relationships with the on-site team. And most importantly, recognize that you'll need to work harder than your on-site counterparts to achieve the same level of understanding.
+
+The greatest lesson? In remote robotics work, **precision matters more than speed**. I'd rather ship a carefully tested feature a day late than rush code that moves physical objects in unpredictable ways. This mindset has made me a better developer across all my work.
