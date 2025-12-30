@@ -1,0 +1,39 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import BlockHeader from '~/components/BlockHeader.astro';
+import HomeBanner from '~/components/HomeBanner.astro';
+import Pagination from '~/components/Pagination.astro';
+import PostPreview from '~/components/PostPreview.astro';
+import siteConfig from '~/site.config';
+import { getSortedPosts } from '~/utils';
+
+const sortedPosts = await getSortedPosts();
+---
+
+<Layout>
+  <section class="my-6 flex flex-col gap-y-3">
+    <HomeBanner jpTitle="私について" title="About Me"></HomeBanner>
+    <BlockHeader jpTitle="私は誰ですか？" title="Who am I?">
+      <div class="px-3 py-8">
+        <div class:list={['max-w-full leading-5 flex flex-col gap-y-3']}>
+          <p class="flex">I'm linuxmobile</p>
+        </div>
+      </div>
+    </BlockHeader>
+  </section>
+  {
+    sortedPosts.length > 0 && (
+      <BlockHeader jpTitle="最新の投稿" title="Latest posts">
+      <div class="px-3">
+        {sortedPosts
+          .reverse()
+          .slice(0, Math.floor(siteConfig.pageSize / 2))
+          .map((post, index) => (
+            <PostPreview post={post} index={index} totalCount={sortedPosts.length} />
+          ))}
+        <Pagination nextLink="/blog" nextText="Articles" />
+      </div>
+      </BlockHeader>
+    )
+  }
+</Layout>

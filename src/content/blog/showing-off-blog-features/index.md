@@ -1,8 +1,8 @@
 ---
 title: 'Showing Off Blog Features'
 published: 2025-07-20
-draft: false
 tags: ['astro', 'demo', 'markdown']
+draft: true
 toc: true
 coverImage:
   src: './cover.jpg'
@@ -78,7 +78,7 @@ _Italic text_
 
 Images can include a title string after the URL to render as a `<figure>` with a `<figcaption>`.
 
-![Pixel art of a tree](./PixelatedGreenTreeSide.png 'Pixel art renders poorly without proper CSS')
+![Pixel art of a tree](./PixelatedGreenTreeSide.png "Pixel art renders poorly without proper CSS")
 
 ```md title="Pixel art markdown" wrap
 ![Pixel art of a tree](./PixelatedGreenTreeSide.png 'Pixel art renders poorly without proper CSS')
@@ -86,7 +86,7 @@ Images can include a title string after the URL to render as a `<figure>` with a
 
 I've also added a special tag for pixel art that adds the correct CSS to render properly. Just add `#pixelated` to the very end of the alt string.
 
-![Pixel art of a tree #pixelated](./PixelatedGreenTreeSide.png 'But adding #pixelated to the end of the alt string fixes this')
+![Pixel art of a tree #pixelated](./PixelatedGreenTreeSide.png "But adding #pixelated to the end of the alt string fixes this")
 
 ```md title="Pixel art markdown with #pixelated" wrap
 ![Pixel art of a tree #pixelated](./PixelatedGreenTreeSide.png 'But adding #pixelated to the end of the alt string fixes this')
@@ -145,20 +145,20 @@ After you've added your image, update the `characters` option in `site.config.ts
 When there are multiple character chats in a row, the order of the chat image and chat bubble reverses to give the chat more of a back-and-forth appearance.
 
 ```md title="Sequential character chats"
-:::owl
+:::penguin
 This is a cool feature!
 :::
 
-:::unicorn
+:::cat
 I agree!
 :::
 ```
 
-:::owl
+:::penguin
 This is a cool feature!
 :::
 
-:::unicorn
+:::cat
 I agree!
 :::
 
@@ -170,7 +170,7 @@ Over here, to the right!
 :::
 ```
 
-:::unicorn{align="right"}
+:::penguin{align="right"}
 Over here, to the right!
 :::
 

@@ -1,26 +1,24 @@
 ---
-import { getCollection, render } from "astro:content";
-import BlockHeader from "~/components/BlockHeader.astro";
-import HomeBanner from "~/components/HomeBanner.astro";
-import Pagination from "~/components/Pagination.astro";
-import PostPreview from "~/components/PostPreview.astro";
-import SeriesSection from "~/components/SeriesSection.astro";
-import TagsSection from "~/components/TagsSection.astro";
-import Layout from "~/layouts/Layout.astro";
-import siteConfig from "~/site.config";
-import { getSortedPosts } from "~/utils";
+import { getCollection, render } from 'astro:content';
+import BlockHeader from '~/components/BlockHeader.astro';
+import HomeBanner from '~/components/HomeBanner.astro';
+import Pagination from '~/components/Pagination.astro';
+import PostPreview from '~/components/PostPreview.astro';
+import SeriesSection from '~/components/SeriesSection.astro';
+import TagsSection from '~/components/TagsSection.astro';
+import Layout from '~/layouts/Layout.astro';
+import siteConfig from '~/site.config';
+import { getSortedPosts } from '~/utils';
 
-const home = await getCollection("home");
+const home = await getCollection('home');
 let HomeContent;
 if (home.length > 0) {
-	const homeEntry = home[0];
-	const { Content } = await render(homeEntry);
-	HomeContent = Content;
+  const homeEntry = home[0];
+  const { Content } = await render(homeEntry);
+  HomeContent = Content;
 }
 const sortedPosts = await getSortedPosts();
-const postsHaveTags = sortedPosts.some(
-	(post) => post.data.tags && post.data.tags.length > 0,
-);
+const postsHaveTags = sortedPosts.some((post) => post.data.tags && post.data.tags.length > 0);
 
 const postsHaveSeries = sortedPosts.some((post) => post.data.series);
 ---
@@ -28,7 +26,7 @@ const postsHaveSeries = sortedPosts.some((post) => post.data.series);
 <Layout>
   {
     HomeContent && (
-      <HomeBanner>
+      <HomeBanner jpTitle="カーネル" title="Kaneru">
         <HomeContent />
       </HomeBanner>
     )

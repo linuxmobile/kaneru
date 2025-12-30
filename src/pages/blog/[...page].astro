@@ -1,22 +1,21 @@
 ---
-import type { GetStaticPaths } from "astro";
-import PageHeader from "~/components/PageHeader.astro";
-import Pagination from "~/components/Pagination.astro";
-import PostPreview from "~/components/PostPreview.astro";
-import Layout from "~/layouts/Layout.astro";
-import { getArticleNumber } from "~/plugins/remark-article-numbers";
-import siteConfig from "~/site.config";
-import { getSortedPosts } from "~/utils";
+import type { GetStaticPaths } from 'astro';
+import PageHeader from '~/components/PageHeader.astro';
+import Pagination from '~/components/Pagination.astro';
+import PostPreview from '~/components/PostPreview.astro';
+import Layout from '~/layouts/Layout.astro';
+import { getArticleNumber } from '~/plugins/remark-article-numbers';
+import siteConfig from '~/site.config';
+import { getSortedPosts } from '~/utils';
 
 // Note: Pagination like '/', '/2', '/3' only works with spread param like [...page]
 export const getStaticPaths = (async ({ paginate }) => {
-	const sortedPosts = await getSortedPosts();
-	return paginate(sortedPosts.reverse(), { pageSize: siteConfig.pageSize });
+  const sortedPosts = await getSortedPosts();
+  return paginate(sortedPosts.reverse(), { pageSize: siteConfig.pageSize });
 }) satisfies GetStaticPaths;
 
 const { page } = Astro.props;
-const pageTitle =
-	`Archive${page.currentPage > 1 ? ` - Page ${page.currentPage}` : ""}`;
+const pageTitle = `Archive${page.currentPage > 1 ? ` - Page ${page.currentPage}` : ''}`;
 const sortedPosts = await getSortedPosts();
 const totalCount = sortedPosts.length;
 ---

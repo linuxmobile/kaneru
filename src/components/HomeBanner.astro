@@ -1,5 +1,16 @@
 ---
 import BlockHeader from "~/components/BlockHeader.astro";
+import GitHubActivityCalendar from '~/components/GitHubActivityCalendar.astro'
+
+const isAboutPage = Astro.url.pathname !== "/about";
+
+interface Props {
+  githubCalendar?: string,
+  jpTitle?: string,
+  title?: string,
+}
+const { jpTitle, title, githubCalendar } = Astro.props
+
 ---
 
 <section class="my-6">
@@ -7,16 +18,19 @@ import BlockHeader from "~/components/BlockHeader.astro";
     <div class="w-full flex items-center justify-start relative select-none">
       <span
         class="absolute font-jp-head text-background dark:text-accent text-5xl -bottom-0 left-0 mix-blend-difference"
-        >カーネル</span
+        >{jpTitle}</span
       >
-      <h1 class="text-accent text-9xl font-title">Kaneru</h1>
+      <h1 class="text-accent text-9xl font-title">{title}</h1>
     </div>
-    <BlockHeader jpTitle="会社概要" title="About">
-      <div class="px-3 py-8">
-        <div class:list={['max-w-full leading-5 flex flex-col gap-y-3']}>
-          <slot />
+    {isAboutPage && (
+      <BlockHeader jpTitle="会社概要" title="About">
+        <div class="px-3 py-8">
+          <div class:list={['max-w-full leading-5 flex flex-col gap-y-3']}>
+            <slot />
+          </div>
         </div>
-      </div>
-    </BlockHeader>
+      </BlockHeader>
+    )}
+    {githubCalendar && <GitHubActivityCalendar username={githubCalendar} />}
   </div>
 </section>

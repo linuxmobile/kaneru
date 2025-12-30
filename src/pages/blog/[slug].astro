@@ -1,73 +1,69 @@
 ---
-import { type CollectionEntry, getCollection, render } from "astro:content";
-import type { GetStaticPaths } from "astro";
-import DividerText from "~/components/DividerText.astro";
-import GiscusLoader from "~/components/GiscusLoader.astro";
-import PostAddendum from "~/components/PostAddendum.astro";
-import PostPreview from "~/components/PostPreview.astro";
-import ScrollUpButton from "~/components/ScrollUpButton.astro";
-import TableOfContents from "~/components/TableOfContents.astro";
-import ChevronsRight from "~/icons/chevrons-right.svg";
-import Layout from "~/layouts/Layout.astro";
-import siteConfig from "~/site.config";
-import type { Collation } from "~/types";
-import { getPostSequenceContext, getSortedPosts, SeriesGroup, TagsGroup } from "~/utils";
+import { type CollectionEntry, getCollection, render } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import DividerText from '~/components/DividerText.astro';
+import GiscusLoader from '~/components/GiscusLoader.astro';
+import PostAddendum from '~/components/PostAddendum.astro';
+import PostPreview from '~/components/PostPreview.astro';
+import ScrollUpButton from '~/components/ScrollUpButton.astro';
+import TableOfContents from '~/components/TableOfContents.astro';
+import ChevronsRight from '~/icons/chevrons-right.svg';
+import Layout from '~/layouts/Layout.astro';
+import siteConfig from '~/site.config';
+import type { Collation } from '~/types';
+import { getPostSequenceContext, getSortedPosts, SeriesGroup, TagsGroup } from '~/utils';
 
 export const getStaticPaths = (async () => {
-	const posts = await getSortedPosts();
-	return posts.map((post) => {
-		// Get sequence context for the post
-		const { prev, next } = getPostSequenceContext(post, posts);
-		return {
-			params: { slug: post.id },
-			props: { post, prev, next },
-		};
-	});
+  const posts = await getSortedPosts();
+  return posts.map((post) => {
+    // Get sequence context for the post
+    const { prev, next } = getPostSequenceContext(post, posts);
+    return {
+      params: { slug: post.id },
+      props: { post, prev, next },
+    };
+  });
 }) satisfies GetStaticPaths;
 
 const { post, prev, next } = Astro.props;
 const postData = post.data;
 const { headings, Content: PostContent } = await render(post);
-const addendum = await getCollection("addendum");
+const addendum = await getCollection('addendum');
 let AddendumContent;
 let addendumAvatarImage;
 if (addendum.length > 0) {
-	const addendumEntry = addendum[0];
-	const { Content } = await render(addendumEntry);
-	AddendumContent = Content;
-	addendumAvatarImage = addendumEntry.data.avatarImage;
+  const addendumEntry = addendum[0];
+  const { Content } = await render(addendumEntry);
+  AddendumContent = Content;
+  addendumAvatarImage = addendumEntry.data.avatarImage;
 }
 
 const sortedPosts = await getSortedPosts();
 const reversedSortedPosts = [...sortedPosts].reverse();
 const postIndex = reversedSortedPosts.findIndex((p) => p.id === post.id);
-const globalIndexPrev = prev
-	? sortedPosts.findIndex((p) => p.id === prev.id)
-	: -1;
-const globalIndexNext = next
-	? sortedPosts.findIndex((p) => p.id === next.id)
-	: -1;
+const globalIndexPrev = prev ? sortedPosts.findIndex((p) => p.id === prev.id) : -1;
+const globalIndexNext = next ? sortedPosts.findIndex((p) => p.id === next.id) : -1;
 const globalTotalCount = sortedPosts.length;
 
 // Get series posts if this post is part of a series
-let series: Collation<"blog"> | undefined;
-let nextPostInSeries: CollectionEntry<"blog"> | undefined;
+let series: Collation<'blog'> | undefined;
+let nextPostInSeries: CollectionEntry<'blog'> | undefined;
 if (postData.series) {
-	const seriesGroup = await SeriesGroup.build(sortedPosts);
-	series = seriesGroup.match(postData.series);
-	if (!series) {
-		// This should not happen if series data is correct
-		throw new Error(`Series "${postData.series}" not found`);
-	}
-	const sequenceContext = getPostSequenceContext(post, series.entries);
-	nextPostInSeries = sequenceContext.next;
+  const seriesGroup = await SeriesGroup.build(sortedPosts);
+  series = seriesGroup.match(postData.series);
+  if (!series) {
+    // This should not happen if series data is correct
+    throw new Error(`Series "${postData.series}" not found`);
+  }
+  const sequenceContext = getPostSequenceContext(post, series.entries);
+  nextPostInSeries = sequenceContext.next;
 }
 const showSeries = series && series.entries.length > 1;
 
-let tags: Collation<"blog">[] | undefined;
+let tags: Collation<'blog'>[] | undefined;
 if (postData.tags && postData.tags.length > 0) {
-	const tagsGroup = await TagsGroup.build(sortedPosts);
-	tags = tagsGroup.matchMany(postData.tags);
+  const tagsGroup = await TagsGroup.build(sortedPosts);
+  tags = tagsGroup.matchMany(postData.tags);
 }
 ---
 
@@ -78,11 +74,7 @@ if (postData.tags && postData.tags.length > 0) {
   tags={postData.tags}
 >
   <article class="max-w-full py-7.5" data-pagefind-body>
-    <PostPreview
-      post={post}
-      index={postIndex}
-      totalCount={globalTotalCount}
-    />
+    <PostPreview post={post} index={postIndex} totalCount={globalTotalCount} />
     <div class="flex flex-col xl:gap-1 2xl:gap-18 xl:flex-row xl:items-start">
       {postData.toc && headings.length > 0 && <TableOfContents headings={headings} />}
       <div class="mb-5 xl:min-w-full 2xl:min-w-full prose">
