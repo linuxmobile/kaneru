@@ -1,33 +1,69 @@
 ---
-import Layout from '@/layouts/Layout.astro';
-import LatestArticle from '@/components/LatestArticle.astro';
+import { getCollection, render } from 'astro:content';
+import BlockHeader from '~/components/BlockHeader.astro';
+import HomeBanner from '~/components/HomeBanner.astro';
+import Pagination from '~/components/Pagination.astro';
+import PostPreview from '~/components/PostPreview.astro';
+import SeriesSection from '~/components/SeriesSection.astro';
+import TagsSection from '~/components/TagsSection.astro';
+import Layout from '~/layouts/Layout.astro';
+import siteConfig from '~/site.config';
+import { getSortedPosts } from '~/utils';
+
+const home = await getCollection('home');
+let HomeContent;
+if (home.length > 0) {
+  const homeEntry = home[0];
+  const { Content } = await render(homeEntry);
+  HomeContent = Content;
+}
+const sortedPosts = await getSortedPosts();
+const postsHaveTags = sortedPosts.some((post) => post.data.tags && post.data.tags.length > 0);
+
+const postsHaveSeries = sortedPosts.some((post) => post.data.series);
 ---
 
 <Layout>
-  <div class="flex flex-col items-center justify-center gap-y-20 px-6 md:px-20 py-20">
-    <div class="w-full flex items-center justify-start relative">
-      <span class="absolute font-jp dark:text-jp-purple text-jp-white text-5xl -bottom-1 left-0 mix-blend-difference">カーネル</span>
-      <h1 class="text-jp-blue dark:text-jp-purple font-alt text-9xl">Kaneru</h1>
-    </div>
-    <section class="flex flex-col gap-y-4">
-      <div class="flex items-center justify-center w-full gap-x-12 pb-12">
-        <div class="relative bg-jp-blue dark:bg-jp-purple px-2 py-1 whitespace-nowrap">
-          <p class="font-jp text-2xl text-jp-white dark:text-jp-purple mix-blend-difference absolute bottom-5 left-0">
-            会社概要</p>
-          <h3 class="font-bold text-jp-white dark:text-jp-dark-primary">About</h3>
-        </div>
-        <div class="flex-1 bg-jp-dark-secondary dark:bg-jp-dark-secondary h-0.3"></div>
+  {
+    HomeContent && (
+      <HomeBanner jpTitle="カーネル" title="Kaneru">
+        <HomeContent />
+      </HomeBanner>
+    )
+  }
+  {
+    postsHaveSeries && (
+      <BlockHeader jpTitle="シリーズ" title="Series">
+        <SeriesSection posts={sortedPosts} />
+      </BlockHeader>
+    )
+  }
+  {
+    postsHaveTags && (
+      <BlockHeader jpTitle="タグ" title="Tags">
+        <TagsSection posts={sortedPosts} />
+      </BlockHeader>
+    )
+  }
+  {
+    sortedPosts.length > 0 && (
+      <BlockHeader jpTitle="最新" title="Latest">
+      <div class="px-3">
+        {sortedPosts
+          .reverse()
+          .slice(0, Math.floor(siteConfig.pageSize / 2))
+          .map((post, index) => (
+            <PostPreview post={post} index={index} totalCount={sortedPosts.length} />
+          ))}
+        <Pagination nextLink="/blog" nextText="Articles" />
       </div>
-      <p class="text-sm">I approach programming as an intricate balance of logic and artistry, where even the smallest
-        detail holds weight and purpose. My autistic perspective grants me a clarity to navigate complexities, crafting
-        solutions with precision and intention. From exploring the depths of Linux to architecting elegant code, my
-        work reflects a commitment to perfection and quiet refinement. Every project is a pursuit of excellence, an
-        unspoken harmony between discipline and creativity, designed to leave a lasting impression that lingers like the beauty
-        of a fleeting moment</p>
-      <p class="text-sm">
-        プログラミングを論理と芸術性の微妙なバランスとして捉え、最小の細部にも重みと目的を持たせています。自閉症の視点から、複雑さを正確に把握し、精密で意図的な解決策を生み出すことができます。Linuxの深層を探求からエレガントなコードの設計まで、私の仕事は完璧さと静かな洗練への取り組みを反映しています。すべてのプロジェクトは卓越性の追求であり、規律と創造性の間の言葉にできない調和であり、一瞬の美しさのように残る印象を残すように設計されています
-      </p>
-    </section>
-    <LatestArticle />
-  </div>
+      </BlockHeader>
+    )
+  }
 </Layout>
+
+<style is:global>
+  a.heading-anchor {
+    display: none !important;
+  }
+</style>

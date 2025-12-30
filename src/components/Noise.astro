@@ -1,118 +1,117 @@
-<canvas id="noise-canvas"
-  class="h-full w-full opacity-10 dark:opacity-5 left-0 top-0 pointer-events-none mix-blend-multiply fixed z-50 dark:mix-blend-screen">
+<canvas
+  id="noise-canvas"
+  class="h-full w-full opacity-10 dark:opacity-5 left-0 top-0 pointer-events-none mix-blend-multiply fixed z-50 dark:mix-blend-screen"
+>
 </canvas>
 
 <script>
-  let noiseCanvas: HTMLCanvasElement | null = null;
-  let animationFrame: number | null = null;
-  let isEnabled = localStorage.getItem('showNoise') !== 'false';
+  let noiseCanvas: HTMLCanvasElement | null = null
+  let animationFrame: number | null = null
+  let isEnabled = localStorage.getItem('showNoise') !== 'false'
 
   function generateNoise(): void {
-    noiseCanvas = document.createElement('canvas');
-    noiseCanvas.height = window.innerHeight * 2;
-    noiseCanvas.width = window.innerWidth * 2;
+    noiseCanvas = document.createElement('canvas')
+    noiseCanvas.height = window.innerHeight * 2
+    noiseCanvas.width = window.innerWidth * 2
 
-    const noiseContext = noiseCanvas.getContext('2d');
-    if (!noiseContext) return;
+    const noiseContext = noiseCanvas.getContext('2d')
+    if (!noiseContext) return
 
-    const noiseData = noiseContext.createImageData(
-      noiseCanvas.width,
-      noiseCanvas.height
-    );
+    const noiseData = noiseContext.createImageData(noiseCanvas.width, noiseCanvas.height)
 
     for (let i = 0; i < noiseData.data.length; i += 4) {
-      const gray = Math.floor(Math.random() * 255);
-      noiseData.data[i] = gray;
-      noiseData.data[i + 1] = gray;
-      noiseData.data[i + 2] = gray;
-      noiseData.data[i + 3] = 255;
+      const gray = Math.floor(Math.random() * 255)
+      noiseData.data[i] = gray
+      noiseData.data[i + 1] = gray
+      noiseData.data[i + 2] = gray
+      noiseData.data[i + 3] = 255
     }
 
-    noiseContext.putImageData(noiseData, 0, 0);
+    noiseContext.putImageData(noiseData, 0, 0)
   }
 
   function moveNoise(): void {
     if (!isEnabled) {
       if (animationFrame !== null) {
-        cancelAnimationFrame(animationFrame);
-        animationFrame = null;
+        cancelAnimationFrame(animationFrame)
+        animationFrame = null
       }
-      return;
+      return
     }
 
-    const canvas = document.getElementById('noise-canvas') as HTMLCanvasElement;
-    if (!canvas) return;
+    const canvas = document.getElementById('noise-canvas') as HTMLCanvasElement
+    if (!canvas) return
 
-    const context = canvas.getContext('2d');
-    if (!context || !noiseCanvas) return;
+    const context = canvas.getContext('2d')
+    if (!context || !noiseCanvas) return
 
-    const x = Math.random() * canvas.width;
-    const y = Math.random() * canvas.height;
+    const x = Math.random() * canvas.width
+    const y = Math.random() * canvas.height
 
-    context.clearRect(0, 0, canvas.width, canvas.height);
-    context.drawImage(noiseCanvas, -x, -y);
+    context.clearRect(0, 0, canvas.width, canvas.height)
+    context.drawImage(noiseCanvas, -x, -y)
 
-    animationFrame = requestAnimationFrame(moveNoise);
+    animationFrame = requestAnimationFrame(moveNoise)
   }
 
   function handleResize(): void {
-    const canvas = document.getElementById('noise-canvas') as HTMLCanvasElement;
-    if (!canvas) return;
+    const canvas = document.getElementById('noise-canvas') as HTMLCanvasElement
+    if (!canvas) return
 
-    canvas.height = window.innerHeight;
-    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight
+    canvas.width = window.innerWidth
 
-    generateNoise();
+    generateNoise()
     if (isEnabled && !animationFrame) {
-      animationFrame = requestAnimationFrame(moveNoise);
+      animationFrame = requestAnimationFrame(moveNoise)
     }
   }
 
   function initNoise(): void {
-    const canvas = document.getElementById('noise-canvas') as HTMLCanvasElement;
-    if (!canvas) return;
+    const canvas = document.getElementById('noise-canvas') as HTMLCanvasElement
+    if (!canvas) return
 
-    canvas.height = window.innerHeight;
-    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight
+    canvas.width = window.innerWidth
 
-    canvas.style.display = isEnabled ? 'block' : 'none';
+    canvas.style.display = isEnabled ? 'block' : 'none'
 
-    generateNoise();
+    generateNoise()
     if (isEnabled) {
-      animationFrame = requestAnimationFrame(moveNoise);
+      animationFrame = requestAnimationFrame(moveNoise)
     }
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', handleResize)
   }
 
   document.addEventListener('toggle-noise', (event) => {
-    const detail = (event as CustomEvent).detail;
-    isEnabled = detail.noiseEnabled;
+    const detail = (event as CustomEvent).detail
+    isEnabled = detail.noiseEnabled
 
-    const canvas = document.getElementById('noise-canvas') as HTMLCanvasElement;
+    const canvas = document.getElementById('noise-canvas') as HTMLCanvasElement
     if (canvas) {
-      canvas.style.display = isEnabled ? 'block' : 'none';
+      canvas.style.display = isEnabled ? 'block' : 'none'
     }
 
     if (isEnabled && !animationFrame) {
-      animationFrame = requestAnimationFrame(moveNoise);
+      animationFrame = requestAnimationFrame(moveNoise)
     }
-  });
+  })
 
-  initNoise();
+  initNoise()
 
   document.addEventListener('astro:page-load', () => {
     if (animationFrame !== null) {
-      cancelAnimationFrame(animationFrame);
-      animationFrame = null;
+      cancelAnimationFrame(animationFrame)
+      animationFrame = null
     }
-    initNoise();
-  });
+    initNoise()
+  })
 
   document.addEventListener('astro:before-swap', () => {
     if (animationFrame !== null) {
-      cancelAnimationFrame(animationFrame);
+      cancelAnimationFrame(animationFrame)
     }
-    window.removeEventListener('resize', handleResize);
-  });
+    window.removeEventListener('resize', handleResize)
+  })
 </script>
