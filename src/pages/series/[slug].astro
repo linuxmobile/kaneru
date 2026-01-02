@@ -3,7 +3,7 @@ import type { GetStaticPaths } from "astro";
 import PageHeader from "~/components/PageHeader.astro";
 import PostPreview from "~/components/PostPreview.astro";
 import Layout from "~/layouts/Layout.astro";
-import { getSortedPosts, SeriesGroup } from "~/utils";
+import { SeriesGroup } from "~/utils";
 
 export const getStaticPaths = (async () => {
 	const seriesGroup = await SeriesGroup.build();
@@ -16,8 +16,6 @@ export const getStaticPaths = (async () => {
 }) satisfies GetStaticPaths;
 
 const { posts, seriesTitle } = Astro.props;
-const sortedPosts = (await getSortedPosts()).reverse();
-const globalTotalCount = sortedPosts.length;
 ---
 
 <Layout
@@ -28,14 +26,8 @@ const globalTotalCount = sortedPosts.length;
     <PageHeader titlePieces={['series', seriesTitle]} />
     {
       posts.map((post) => {
-        const globalIndex = sortedPosts.findIndex((p) => p.id === post.id)
         return (
-          <PostPreview
-            post={post}
-            index={0}
-            totalCount={globalTotalCount}
-            globalIndex={globalIndex}
-          />
+          <PostPreview post={post} />
         )
       })
     }

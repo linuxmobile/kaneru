@@ -33,15 +33,8 @@ const sortedPosts = await getSortedPosts();
     <PageHeader titlePieces={['tags', tagTitle]} />
     {
       page.data.map((post) => {
-        const globalIndex = sortedPosts.findIndex((p) => p.id === post.id)
         return (
-          <PostPreview
-            post={post}
-            index={0}
-            totalCount={globalIndex + 1}
-            pageSize={siteConfig.pageSize}
-            currentPage={page.currentPage}
-          />
+          <PostPreview post={post} />
         )
       })
     }

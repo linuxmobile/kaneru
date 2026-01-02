@@ -4,7 +4,6 @@ import PageHeader from '~/components/PageHeader.astro';
 import Pagination from '~/components/Pagination.astro';
 import PostPreview from '~/components/PostPreview.astro';
 import Layout from '~/layouts/Layout.astro';
-import { getArticleNumber } from '~/plugins/remark-article-numbers';
 import siteConfig from '~/site.config';
 import { getSortedPosts } from '~/utils';
 
@@ -24,14 +23,8 @@ const totalCount = sortedPosts.length;
   <div class="mt-2 sm:mt-0">
     <PageHeader />
     {
-      page.data.map((post, index) => (
-        <PostPreview
-          post={post}
-          index={index}
-          totalCount={totalCount}
-          pageSize={siteConfig.pageSize}
-          currentPage={page.currentPage}
-        />
+      page.data.map((post) => (
+        <PostPreview post={post} />
       ))
     }
     <Pagination
